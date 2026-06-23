@@ -29,11 +29,11 @@ export class D {
       // don't forget to convert to absolute
       data = data.toAbs();
 
-      let moveToSegment = MoveToSegment.from(data.commands[0]);
+      let moveToSegment = MoveToSegment.matching(data.commands[0]);
 
       let trailingSegments: [TrailingSegment, ...TrailingSegment[]] = [
-        TrailingSegment.from(data.commands[1]),
-        ...data.commands.slice(2).map(command => TrailingSegment.from(command)),
+        TrailingSegment.matching(data.commands[1]),
+        ...data.commands.slice(2).map(command => TrailingSegment.matching(command)),
       ];
 
       return new D(moveToSegment, trailingSegments);
@@ -128,10 +128,10 @@ const DefaultD = {
       throw new Error('Unable to create default SVG path definition.');
     }
 
-    let moveToSegment = MoveToSegment.from(data.commands[0]);
+    let moveToSegment = MoveToSegment.matching(data.commands[0]);
 
     let trailingSegments: [TrailingSegment] = [
-      TrailingSegment.from(data.commands[1]),
+      TrailingSegment.matching(data.commands[1]),
     ];
 
     return new D(moveToSegment, trailingSegments);

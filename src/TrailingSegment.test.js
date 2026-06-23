@@ -5,19 +5,19 @@ import { SVGPathData } from 'svg-pathdata';
 import { FinitePoint } from '@rnacanvas/points.oopified';
 
 describe('`class TrailingSegment`', () => {
-  test('`static from()`', () => {
+  test('`static matching()`', () => {
     var pathD = new SVGPathData('M 0 0 L 10 -30 Q 12 -18 8.4 10 C 10 20 -2 -3 50 30');
 
-    // from an "L" command
-    var segment = TrailingSegment.from(pathD.commands[1]);
+    // an "L" command
+    var segment = TrailingSegment.matching(pathD.commands[1]);
 
     expect(segment.controlPoints.length).toBe(0);
 
     expect(segment.endPoint.x).toBe(10);
     expect(segment.endPoint.y).toBe(-30);
 
-    // from a "Q" command
-    var segment = TrailingSegment.from(pathD.commands[2]);
+    // a "Q" command
+    var segment = TrailingSegment.matching(pathD.commands[2]);
 
     expect(segment.controlPoints.length).toBe(1);
 
@@ -27,8 +27,8 @@ describe('`class TrailingSegment`', () => {
     expect(segment.endPoint.x).toBe(8.4);
     expect(segment.endPoint.y).toBe(10);
 
-    // from a "C" command
-    var segment = TrailingSegment.from(pathD.commands[3]);
+    // a "C" command
+    var segment = TrailingSegment.matching(pathD.commands[3]);
 
     expect(segment.controlPoints.length).toBe(2);
 
@@ -41,14 +41,14 @@ describe('`class TrailingSegment`', () => {
     expect(segment.endPoint.y).toBe(30);
 
     // throws for unrecognized commands
-    expect(() => TrailingSegment.from(pathD.commands[0])).toThrow();
+    expect(() => TrailingSegment.matching(pathD.commands[0])).toThrow();
 
     expect(pathD.commands[0]).toBeTruthy();
 
     var pathD = new SVGPathData('M 10 20 l 80 100');
 
     // throws for relative commands
-    expect(() => TrailingSegment.from(pathD.commands[1])).toThrow();
+    expect(() => TrailingSegment.matching(pathD.commands[1])).toThrow();
 
     expect(pathD.commands[1].relative).toBeTruthy();
   });

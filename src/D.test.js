@@ -59,9 +59,9 @@ describe('`class D`', () => {
   test('`constructor()`', () => {
     var data = new SVGPathData('M 1 5 Q 0 10 20 100 L 80 40');
 
-    var moveToSegment = MoveToSegment.from(data.commands[0]);
+    var moveToSegment = MoveToSegment.matching(data.commands[0]);
 
-    var trailingSegments = data.commands.slice(1).map(command => TrailingSegment.from(command));
+    var trailingSegments = data.commands.slice(1).map(command => TrailingSegment.matching(command));
 
     var d = new D(moveToSegment, trailingSegments);
 

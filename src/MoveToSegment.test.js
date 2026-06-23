@@ -5,24 +5,24 @@ import { FinitePoint } from '@rnacanvas/points.oopified';
 import { SVGPathData } from 'svg-pathdata';
 
 describe('`class MoveToSegment`', () => {
-  test('`static from()`', () => {
+  test('`static matching()`', () => {
     var pathD = new SVGPathData('M 10 20 Q 1 2 50 100');
 
-    // from an "M" command
-    var segment = MoveToSegment.from(pathD.commands[0]);
+    // an "M" command
+    var segment = MoveToSegment.matching(pathD.commands[0]);
 
     expect(segment.startPoint.x).toBe(10);
     expect(segment.startPoint.y).toBe(20);
 
-    // from not an "M" command
-    expect(() => MoveToSegment.from(pathD.commands[1])).toThrow();
+    // not an "M" command
+    expect(() => MoveToSegment.matching(pathD.commands[1])).toThrow();
 
     expect(pathD.commands[1]).toBeTruthy();
 
     var pathD = new SVGPathData('M 10 20 m 100 200');
 
-    // from a relative command
-    expect(() => MoveToSegment.from(pathD.commands[1])).toThrow();
+    // a relative "M" command
+    expect(() => MoveToSegment.matching(pathD.commands[1])).toThrow();
 
     expect(pathD.commands[1]).toBeTruthy();
   });

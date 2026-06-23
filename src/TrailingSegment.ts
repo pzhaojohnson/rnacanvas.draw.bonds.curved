@@ -8,9 +8,9 @@ import { FinitePoint } from '@rnacanvas/points.oopified';
  * A segment that comes after at least one previous segment in an SVG path definition (for a curved bond).
  */
 export class TrailingSegment {
-  static from(command: SVGCommand): TrailingSegment | never {
+  static matching(command: SVGCommand): TrailingSegment | never {
     if (command.type !== SVGPathData.LINE_TO && command.type !== SVGPathData.QUAD_TO && command.type !== SVGPathData.CURVE_TO) {
-      throw new Error('Trailing segments can only be created from "L", "Q" and "C" SVG path definition commands.');
+      throw new Error('Trailing segments can only be created for "L", "Q" and "C" SVG path definition commands.');
     }
 
     if (command.relative) {

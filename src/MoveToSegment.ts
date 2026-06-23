@@ -5,7 +5,7 @@ import { SVGPathData } from 'svg-pathdata';
 import type { SVGCommand } from 'svg-pathdata';
 
 export class MoveToSegment {
-  static from(command: SVGCommand): MoveToSegment | never {
+  static matching(command: SVGCommand): MoveToSegment | never {
     if (command.type !== SVGPathData.MOVE_TO) {
       throw new Error('SVG path definition command is not of type "M".');
     }
