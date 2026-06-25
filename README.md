@@ -37,14 +37,14 @@ bond.base2 === base2; // true
 bond.domNode.id.length >= 36; // true
 ```
 
-### `get id()`
+### `readonly id`
 
 The ID of a curved bond.
 
 (Corresponds to the ID attribute of the underlying SVG path element.)
 
 As with DOM elements in general,
-the ID of a curved bond shouldn't be changed after it has been set.
+the ID of a curved bond shouldn't be changed after it's been set.
 
 ```javascript
 var domNode = document.createElementNS('http://www.w3.org/2000/svg', 'path');
