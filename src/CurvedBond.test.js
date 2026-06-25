@@ -5,6 +5,28 @@
 import { CurvedBond } from './CurvedBond';
 
 describe('`class CurvedBond`', () => {
+  test('`static between()`', () => {
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    var bond = CurvedBond.between(base1, base2);
+
+    // passes nucleobase references correctly
+    expect(bond.base1).toBe(base1);
+    expect(bond.base2).toBe(base2);
+
+    // assigns a universally unique ID that begins with a letter
+    expect(bond.domNode.id.startsWith('id-')).toBeTruthy();
+    expect(bond.domNode.id).toMatch(uuidRegex);
+
+    // assigns some default values (exact values are hard-coded to match `static between()` method)
+    expect(bond.domNode.getAttribute('stroke')).toBe('black');
+    expect(bond.domNode.getAttribute('stroke-width')).toBe('1.5');
+
+    // explicitly assigns fill of "none"
+    expect(bond.domNode.getAttribute('fill')).toBe('none')
+  });
+
   test('`constructor()`', () => {
     var domNode = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
@@ -28,3 +50,5 @@ class NucleobaseMock {
    */
   id = `${Math.random()}`;
 }
+
+const uuidRegex = /[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/;
