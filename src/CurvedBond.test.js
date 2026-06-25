@@ -42,6 +42,19 @@ describe('`class CurvedBond`', () => {
     expect(bond.base1).toBe(base1);
     expect(bond.base2).toBe(base2);
   });
+
+  test('`get id()`', () => {
+    var domNode = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+    domNode.id = 'id-9819817294124';
+
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    var bond = new CurvedBond(domNode, base1, base2);
+
+    expect(bond.id).toBe('id-9819817294124');
+  });
 });
 
 class NucleobaseMock {

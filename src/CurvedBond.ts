@@ -42,6 +42,10 @@ export class CurvedBond {
 
   constructor(readonly domNode: SVGPathElement, readonly base1: Nucleobase, readonly base2: Nucleobase) {}
 
+  get id(): string {
+    return this.domNode.id;
+  }
+
   /**
    * Repositions the curved bond based on the current positions of bases 1 and 2
    * and the cached base paddings.
