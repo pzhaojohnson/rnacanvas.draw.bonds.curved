@@ -41,6 +41,10 @@ export class BasePadding {
       return zeroBasePadding;
     }
 
+    return BasePadding.matching(vector);
+  }
+
+  static matching(vector: VectorLike): BasePadding {
     let v = Vector.matching(vector);
 
     return new BasePadding(v.magnitude, v.direction);

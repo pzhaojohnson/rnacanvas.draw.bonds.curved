@@ -82,11 +82,8 @@ export class CurvedBond {
   #cacheBasePaddings(): void {
     let d = D.matching(this.domNode.getAttribute('d'));
 
-    let v1 = Point.matching(this.base1.centerPoint).displacementTo(d.startPoint);
-    let v2 = Point.matching(this.base2.centerPoint).displacementTo(d.endPoint);
-
-    let basePadding1 = new BasePadding(v1.magnitude, v1.direction);
-    let basePadding2 = new BasePadding(v2.magnitude, v2.direction);
+    let basePadding1 = BasePadding.matching(Point.matching(this.base1.centerPoint).displacementTo(d.startPoint));
+    let basePadding2 = BasePadding.matching(Point.matching(this.base2.centerPoint).displacementTo(d.endPoint));
 
     // relativize
     basePadding1 = this.#relativized1(basePadding1);
@@ -103,7 +100,7 @@ export class CurvedBond {
    * Doesn't modify the input base padding object.
    */
   #absolutized1(basePadding: BasePadding): BasePadding {
-    let absolutized = BasePadding.from(basePadding.toJSON());
+    let absolutized = BasePadding.matching(basePadding);
 
     absolutized.direction += direction(this.base1.centerPoint, this.base2.centerPoint);
 
@@ -116,7 +113,7 @@ export class CurvedBond {
    * Doesn't modify the input base padding object.
    */
   #absolutized2(basePadding: BasePadding): BasePadding {
-    let absolutized = BasePadding.from(basePadding.toJSON());
+    let absolutized = BasePadding.matching(basePadding);
 
     absolutized.direction += direction(this.base2.centerPoint, this.base1.centerPoint);
 
@@ -129,7 +126,7 @@ export class CurvedBond {
    * Doesn't modify the input base padding object.
    */
   #relativized1(basePadding: BasePadding): BasePadding {
-    let relativized = BasePadding.from(basePadding.toJSON());
+    let relativized = BasePadding.matching(basePadding);
 
     relativized.direction -= direction(this.base1.centerPoint, this.base2.centerPoint);
 
@@ -142,7 +139,7 @@ export class CurvedBond {
    * Doesn't modify the input base padding object.
    */
   #relativized2(basePadding: BasePadding): BasePadding {
-    let relativized = BasePadding.from(basePadding.toJSON());
+    let relativized = BasePadding.matching(basePadding);
 
     relativized.direction -= direction(this.base2.centerPoint, this.base1.centerPoint);
 

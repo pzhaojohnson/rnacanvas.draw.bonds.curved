@@ -24,6 +24,18 @@ describe('`class BasePadding`', () => {
     expect(BasePadding.from(undefined)).toStrictEqual(BasePadding.from(undefined));
   });
 
+  test('`static matching()`', () => {
+    var bp = BasePadding.matching({ magnitude: 10, direction: -Math.PI / 6 });
+
+    expect(bp.magnitude).toBeCloseTo(10);
+    expect(bp.direction).toBeCloseTo(-Math.PI / 6);
+
+    var bp = BasePadding.matching({ x: 1, y: 3**0.5 });
+
+    expect(bp.magnitude).toBeCloseTo(2);
+    expect(bp.direction).toBeCloseTo(Math.PI / 3);
+  });
+
   test('`constructor()`', () => {
     var bp = new BasePadding(-57, Math.PI / 10);
 
