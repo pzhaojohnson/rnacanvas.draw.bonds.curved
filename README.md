@@ -33,6 +33,6 @@ var bond = CurvedBond.betweeen(base1, base2);
 bond.base1 === base1; // true
 bond.base2 === base2; // true
 
-// the `static between() method creates curved bonds with UUIDs
+// the `static between()` method creates curved bonds with UUIDs
 bond.domNode.id.length >= 36; // true
 ```
