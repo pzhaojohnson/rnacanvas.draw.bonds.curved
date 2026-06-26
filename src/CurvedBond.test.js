@@ -61,6 +61,28 @@ describe('`class CurvedBond`', () => {
     // listens for base 2 movement
     expect(D.matching(bond.domNode.getAttribute('d')).endPoint.x).toBeCloseTo(-540.2);
     expect(D.matching(bond.domNode.getAttribute('d')).endPoint.y).toBeCloseTo(0.553);
+
+    bond.basePadding1.magnitude = 12;
+    bond.basePadding2.magnitude = 8.55;
+
+    // uncache base paddings
+    domNode.dataset.basePadding1 = '';
+    domNode.dataset.basePadding2 = '';
+
+    var bond = new CurvedBond(domNode, base1, base2);
+
+    // caches base paddings
+    expect(JSON.parse(domNode.dataset.basePadding1).magnitude).toBeCloseTo(12);
+    expect(JSON.parse(domNode.dataset.basePadding2).magnitude).toBeCloseTo(8.55);
+
+    domNode.dataset.basePadding1 = JSON.stringify({ magnitude: 1000, direction: 0 });
+    domNode.dataset.basePadding2 = JSON.stringify({ magnitude: 2000, direction: 0 });
+
+    var bond = new CurvedBond(domNode, base1, base2);
+
+    // doesn't overwrite previously cached base paddings
+    expect(bond.basePadding1.magnitude).toBeCloseTo(1000);
+    expect(bond.basePadding2.magnitude).toBeCloseTo(2000);
   });
 
   test('`get id()`', () => {

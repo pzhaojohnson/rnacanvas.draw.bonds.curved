@@ -41,6 +41,11 @@ export class CurvedBond {
   }
 
   constructor(readonly domNode: SVGPathElement, readonly base1: Nucleobase, readonly base2: Nucleobase) {
+    // don't overwrite previously cached base paddings
+    if (!domNode.dataset.basePadding1 && !domNode.dataset.basePadding2) {
+      this.#cacheBasePaddings();
+    }
+
     // reposition curved bonds when either base moves
     base1.addEventListener('change', () => this.#reposition());
     base2.addEventListener('change', () => this.#reposition());
