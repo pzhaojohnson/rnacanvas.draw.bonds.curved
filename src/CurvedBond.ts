@@ -40,7 +40,11 @@ export class CurvedBond {
     return bond;
   }
 
-  constructor(readonly domNode: SVGPathElement, readonly base1: Nucleobase, readonly base2: Nucleobase) {}
+  constructor(readonly domNode: SVGPathElement, readonly base1: Nucleobase, readonly base2: Nucleobase) {
+    // reposition curved bonds when either base moves
+    base1.addEventListener('change', () => this.#reposition());
+    base2.addEventListener('change', () => this.#reposition());
+  }
 
   get id(): string {
     return this.domNode.id;

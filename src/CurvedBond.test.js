@@ -4,6 +4,10 @@
 
 import { CurvedBond } from './CurvedBond';
 
+import { NucleobaseMock } from './NucleobaseMock';
+
+import { D } from './D';
+
 describe('`class CurvedBond`', () => {
   test('`static between()`', () => {
     var base1 = new NucleobaseMock();
@@ -41,6 +45,20 @@ describe('`class CurvedBond`', () => {
     // stores nucleobase references
     expect(bond.base1).toBe(base1);
     expect(bond.base2).toBe(base2);
+
+    base1.centerPoint = { x: 1000.1, y: -210.5 };
+    base1.dispatchEvent('change');
+
+    // listens for base 1 movement
+    expect(D.matching(bond.domNode.getAttribute('d')).startPoint.x).toBeCloseTo(1000.1);
+    expect(D.matching(bond.domNode.getAttribute('d')).startPoint.y).toBeCloseTo(-210.5);
+
+    base2.centerPoint = { x: -540.2, y: 0.553 };
+    base2.dispatchEvent('change');
+
+    // listens for base 2 movement
+    expect(D.matching(bond.domNode.getAttribute('d')).endPoint.x).toBeCloseTo(-540.2);
+    expect(D.matching(bond.domNode.getAttribute('d')).endPoint.y).toBeCloseTo(0.553);
   });
 
   test('`get id()`', () => {
@@ -56,12 +74,5 @@ describe('`class CurvedBond`', () => {
     expect(bond.id).toBe('id-9819817294124');
   });
 });
-
-class NucleobaseMock {
-  /**
-   * Make each one unique.
-   */
-  id = `${Math.random()}`;
-}
 
 const uuidRegex = /[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/;
