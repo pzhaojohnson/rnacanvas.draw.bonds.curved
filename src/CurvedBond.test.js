@@ -8,6 +8,8 @@ import { NucleobaseMock } from './NucleobaseMock';
 
 import { D } from './D';
 
+import { Point } from '@rnacanvas/points.oopified';
+
 describe('`class CurvedBond`', () => {
   test('`static between()`', () => {
     var base1 = new NucleobaseMock();
@@ -72,6 +74,68 @@ describe('`class CurvedBond`', () => {
     var bond = new CurvedBond(domNode, base1, base2);
 
     expect(bond.id).toBe('id-9819817294124');
+  });
+
+  test('`get basePadding1()`', () => {
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    var bond = CurvedBond.between(base1, base2);
+
+    base1.centerPoint = { x: 12, y: -33 };
+    base2.centerPoint = { x: 59, y: 9 };
+
+    bond.basePadding1.magnitude = 7;
+    expect(bond.basePadding1.magnitude).toBeCloseTo(7);
+
+    // caches value
+    expect(JSON.parse(bond.domNode.dataset.basePadding1).magnitude).toBeCloseTo(7);
+
+    // repositions bond
+    expect(Point.matching(base1.centerPoint).distanceTo(D.matching(bond.domNode.getAttribute('d')).startPoint)).toBeCloseTo(7);
+
+    bond.basePadding1.direction = Math.PI / 4.5;
+    expect(bond.basePadding1.direction).toBeCloseTo(Math.PI / 4.5);
+
+    // caches value
+    expect(JSON.parse(bond.domNode.dataset.basePadding1).direction).toBeCloseTo(Math.PI / 4.5);
+
+    var d = D.matching(bond.domNode.getAttribute('d'));
+
+    // repositions bond
+    let direction = Point.matching(base1.centerPoint).directionTo(d.startPoint);
+    expect(direction - Point.matching(base1.centerPoint).directionTo(base2.centerPoint)).toBeCloseTo(Math.PI / 4.5);
+  });
+
+  test('`get basePadding2()`', () => {
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    var bond = CurvedBond.between(base1, base2);
+
+    base1.centerPoint = { x: 22, y: -80 };
+    base2.centerPoint = { x: 84, y: 12 };
+
+    bond.basePadding2.magnitude = 5;
+    expect(bond.basePadding2.magnitude).toBeCloseTo(5);
+
+    // caches value
+    expect(JSON.parse(bond.domNode.dataset.basePadding2).magnitude).toBeCloseTo(5);
+
+    // repositions bond
+    expect(Point.matching(base2.centerPoint).distanceTo(D.matching(bond.domNode.getAttribute('d')).endPoint)).toBeCloseTo(5);
+
+    bond.basePadding2.direction = Math.PI / 3.75;
+    expect(bond.basePadding2.direction).toBeCloseTo(Math.PI / 3.75);
+
+    // caches value
+    expect(JSON.parse(bond.domNode.dataset.basePadding2).direction).toBeCloseTo(Math.PI / 3.75);
+
+    var d = D.matching(bond.domNode.getAttribute('d'));
+
+    // repositions bond
+    let direction = Point.matching(base2.centerPoint).directionTo(d.endPoint);
+    expect(direction - Point.matching(base2.centerPoint).directionTo(base1.centerPoint)).toBeCloseTo(Math.PI / 3.75);
   });
 });
 

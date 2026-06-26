@@ -51,6 +51,76 @@ export class CurvedBond {
   }
 
   /**
+   * Note that the direction of base padding 1 is relative to the direction from base 1 to base 2.
+   */
+  get basePadding1() {
+    let getBasePadding1 = () => BasePadding.from(this.domNode.dataset.basePadding1);
+
+    let setBasePadding1 = (magnitude: number, direction: number) => {
+      let basePadding1 = new BasePadding(magnitude, direction);
+
+      this.domNode.dataset.basePadding1 = basePadding1.toJSON();
+
+      this.#reposition();
+    };
+
+    let getMagnitude = () => getBasePadding1().magnitude;
+
+    let getDirection = () => getBasePadding1().direction;
+
+    let setMagnitude = (magnitude: number) => {
+      setBasePadding1(magnitude, getDirection());
+    };
+
+    let setDirection = (direction: number) => {
+      setBasePadding1(getMagnitude(), direction);
+    };
+
+    return {
+      get magnitude() { return getMagnitude(); },
+      set magnitude(magnitude) { setMagnitude(magnitude); },
+
+      get direction() { return getDirection(); },
+      set direction(direction) { setDirection(direction); },
+    };
+  }
+
+  /**
+   * Note that the direction of base padding 2 is relative to the direction from base 2 to base 1.
+   */
+  get basePadding2() {
+    let getBasePadding2 = () => BasePadding.from(this.domNode.dataset.basePadding2);
+
+    let setBasePadding2 = (magnitude: number, direction: number) => {
+      let basePadding2 = new BasePadding(magnitude, direction);
+
+      this.domNode.dataset.basePadding2 = basePadding2.toJSON();
+
+      this.#reposition();
+    };
+
+    let getMagnitude = () => getBasePadding2().magnitude;
+
+    let getDirection = () => getBasePadding2().direction;
+
+    let setMagnitude = (magnitude: number) => {
+      setBasePadding2(magnitude, getDirection());
+    };
+
+    let setDirection = (direction: number) => {
+      setBasePadding2(getMagnitude(), direction);
+    };
+
+    return {
+      get magnitude() { return getMagnitude(); },
+      set magnitude(magnitude) { setMagnitude(magnitude); },
+
+      get direction() { return getDirection(); },
+      set direction(direction) { setDirection(direction); },
+    };
+  }
+
+  /**
    * Repositions the curved bond based on the current positions of bases 1 and 2
    * and the cached base paddings.
    */
