@@ -35,6 +35,11 @@ export class CurvedBond {
     // otherwise fill will be black by default in programs such as Adobe Illustrator
     domNode.setAttribute('fill', 'none');
 
+    let mp = midpoint(base1.centerPoint, base2.centerPoint);
+
+    // give curved bonds a single quad-to segment by default
+    domNode.setAttribute('d', `M ${base1.centerPoint.x} ${base1.centerPoint.y} Q ${mp.x} ${mp.y} ${base2.centerPoint.x} ${base2.centerPoint.y}`);
+
     let bond = new CurvedBond(domNode, base1, base2);
 
     return bond;
@@ -123,6 +128,26 @@ export class CurvedBond {
       get direction() { return getDirection(); },
       set direction(direction) { setDirection(direction); },
     };
+  }
+
+  drag(x: number, y: number, options?: { dragPoint?: PointLike, dragGroup?: Collection<SVGGraphicsElement> }): void {
+    let dragGroup = options?.dragGroup;
+
+    // let the curved bond be dragged with bases 1 or 2 (if bases 1 or 2 are already being dragged)
+    if (dragGroup?.has(this.base1.domNode) || dragGroup?.has(this.base2.domNode)) {
+      return;
+    }
+
+    let dragPoint = options?.dragPoint ?? this.domNode.getPointAtLength(this.domNode.getTotalLength() / 2);
+
+    let d = D.matching(this.domNode.getAttribute('d'));
+
+    d.drag(x, y, { dragPoint });
+
+    // reposition the curved bond
+    this.domNode.setAttribute('d', d.toString());
+
+    this.#cacheBasePaddings();
   }
 
   /**
@@ -231,3 +256,12 @@ export class CurvedBond {
 }
 
 type Vector = ReturnType<Point['displacementTo']>;
+
+type PointLike = {
+  x: number;
+  y: number;
+};
+
+interface Collection<T> {
+  has(item: T): boolean;
+};

@@ -30,7 +30,13 @@ describe('`class CurvedBond`', () => {
     expect(bond.domNode.getAttribute('stroke-width')).toBe('1.5');
 
     // explicitly assigns fill of "none"
-    expect(bond.domNode.getAttribute('fill')).toBe('none')
+    expect(bond.domNode.getAttribute('fill')).toBe('none');
+
+    var d = D.matching(bond.domNode.getAttribute('d'));
+
+    // gives curved bonds a single quad-to segment by default
+    expect(d.trailingSegments.length).toBe(1);
+    expect(d.trailingSegments[0].controlPoints.length).toBe(1);
   });
 
   test('`constructor()`', () => {
@@ -158,6 +164,58 @@ describe('`class CurvedBond`', () => {
     // repositions bond
     let direction = Point.matching(base2.centerPoint).directionTo(d.endPoint);
     expect(direction - Point.matching(base2.centerPoint).directionTo(base1.centerPoint)).toBeCloseTo(Math.PI / 3.75);
+  });
+
+  test('`drag()`', () => {
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    base1.centerPoint = { x: 100, y: -250.1 };
+    base2.centerPoint = { x: 820, y: 340 };
+
+    var bond = CurvedBond.between(base1, base2);
+
+    bond.domNode.getTotalLength = () => Point.matching(base1.centerPoint).distanceTo(base2.centerPoint);
+
+    bond.domNode.getPointAtLength = length => {
+      let angle = Point.matching(base1.centerPoint).directionTo(base2.centerPoint);
+
+      return Point.matching(base1.centerPoint).displaced({ magnitude: length, direction: angle });
+    };
+
+    var controlPoint = D.matching(bond.domNode.getAttribute('d')).trailingSegments[0].controlPoints[0];
+    expect(controlPoint).toBeTruthy();
+
+    bond.drag(3, 4);
+
+    var d = D.matching(bond.domNode.getAttribute('d'));
+
+    // repositions the curved bond
+    expect(Point.matching(controlPoint).distanceTo(d.trailingSegments[0].controlPoints[0])).toBeCloseTo(2 * 5);
+
+    // drag point specified
+    bond.drag(5, 12, { dragPoint: { x: 820, y: 340 } });
+
+    var d = D.matching(bond.domNode.getAttribute('d'));
+
+    // repositioned the end point
+    expect(Point.matching(base2.centerPoint).distanceTo(d.endPoint)).toBeCloseTo(13);
+
+    // caches base paddings
+    expect(JSON.parse(bond.domNode.dataset.basePadding2).magnitude).toBeCloseTo(13);
+
+    var d = D.matching(bond.domNode.getAttribute('d'));
+
+    // doesn't drag the curved bond if base 1 is already being dragged
+    bond.drag(50, 100, { dragGroup: new Set([base1.domNode]) });
+
+    // doesn't drag the curved bond if base 2 is already being dragged
+    bond.drag(-20, 30, { dragGroup: new Set([base2.domNode]) });
+
+    // unchanged
+    expect(bond.domNode.getAttribute('d')).toBe(d.toString());
+
+    expect(d.toString()).toBeTruthy();
   });
 });
 
