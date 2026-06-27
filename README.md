@@ -27,7 +27,7 @@ Creates and returns a new curved bond between two bases.
 ```javascript
 var drawing = new Drawing();
 
-// necessary for many SVG calculations to work correctly
+// necessary for bounding box calculations to work correctly
 document.body.append(drawing.domNode);
 
 var base1 = drawing.addBase('G');
