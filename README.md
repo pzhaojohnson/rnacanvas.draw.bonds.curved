@@ -48,8 +48,8 @@ The ID of a curved bond.
 
 (Corresponds to the ID attribute of the underlying SVG path element.)
 
-As with DOM elements in general,
-the ID of a curved bond shouldn't be changed after it's been set.
+<b>As with DOM elements in general,
+the ID of a curved bond shouldn't be changed after it's been set.</b>
 
 ```javascript
 var drawing = new Drawing();
