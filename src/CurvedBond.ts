@@ -1,3 +1,5 @@
+import type { Drawing } from './Drawing';
+
 import type { Nucleobase } from './Nucleobase';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -11,6 +13,10 @@ import { BasePadding } from './BasePadding';
 import { direction } from '@rnacanvas/points';
 
 import { Point } from '@rnacanvas/points.oopified';
+
+import { isNonNullObject } from '@rnacanvas/value-check';
+
+import { isString } from '@rnacanvas/value-check';
 
 export class CurvedBond {
   /**
@@ -148,6 +154,65 @@ export class CurvedBond {
     this.domNode.setAttribute('d', d.toString());
 
     this.#cacheBasePaddings();
+  }
+
+  /**
+   * Returns the saved form of the curved bond.
+   */
+  save() {
+    return {
+      id: this.id,
+
+      baseID1: this.base1.id,
+      baseID2: this.base2.id,
+    };
+  }
+
+  /**
+   * Attempts to recreate a saved curved bond (given the parent drawing that its DOM node is in).
+   *
+   * Throws if unable to.
+   */
+  static recreate(savedBond: unknown, parentDrawing: Drawing): CurvedBond | never {
+    if (!isNonNullObject(savedBond)) {
+      throw new Error(`Saved curved bond isn't an object: ${savedBond}.`);
+    }
+
+    let id = savedBond.id;
+
+    if (!isString(id)) {
+      throw new Error(`Saved curved bond ID isn't a string: ${id}.`);
+    }
+
+    let baseID1 = savedBond.baseID1;
+    let baseID2 = savedBond.baseID2;
+
+    if (!isString(baseID1)) {
+      throw new Error(`Saved curved bond base 1 ID isn't a string: ${baseID1}.`);
+    } else if (!isString(baseID2)) {
+      throw new Error(`Saved curved bond base 2 ID isn't a string: ${baseID2}.`);
+    }
+
+    let domNode = parentDrawing.domNode.querySelector('#' + id);
+
+    if (!domNode) {
+      throw new Error('Unable to find saved curved bond DOM node in parent drawing by ID.');
+    } else if (!(domNode instanceof SVGPathElement)) {
+      throw new Error(`Saved curved bond DOM node isn't an SVG path element: ${domNode}.`);
+    }
+
+    let bases = [...parentDrawing.bases];
+
+    let base1 = bases.find(b => b.id === baseID1);
+    let base2 = bases.find(b => b.id === baseID2);
+
+    if (!base1) {
+      throw new Error('Unable to find base 1 in parent drawing.');
+    } else if (!base2) {
+      throw new Error('Unable to find base 2 in parent drawing.');
+    }
+
+    return new CurvedBond(domNode, base1, base2);
   }
 
   /**

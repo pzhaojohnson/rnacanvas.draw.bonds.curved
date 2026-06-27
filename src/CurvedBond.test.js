@@ -6,9 +6,17 @@ import { CurvedBond } from './CurvedBond';
 
 import { NucleobaseMock } from './NucleobaseMock';
 
+import { DrawingMock } from './DrawingMock';
+
 import { D } from './D';
 
 import { Point } from '@rnacanvas/points.oopified';
+
+beforeAll(() => {
+  if (!globalThis.SVGPathElement) {
+    globalThis.SVGPathElement = SVGElement;
+  }
+});
 
 describe('`class CurvedBond`', () => {
   test('`static between()`', () => {
@@ -216,6 +224,62 @@ describe('`class CurvedBond`', () => {
     expect(bond.domNode.getAttribute('d')).toBe(d.toString());
 
     expect(d.toString()).toBeTruthy();
+  });
+
+  test('`save()`', () => {
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    base1.id = 'id-12345';
+    base2.id = 'id-ABCDE';
+
+    var bond = CurvedBond.between(base1, base2);
+
+    bond.domNode.id = 'id-54321';
+
+    var savedBond = bond.save();
+
+    expect(savedBond).toStrictEqual({
+      id: 'id-54321',
+
+      baseID1: 'id-12345',
+      baseID2: 'id-ABCDE',
+    });
+
+    // is JSON-stringifiable
+    expect(() => JSON.stringify(savedBond)).not.toThrow();
+  });
+
+  test('`static recreate()`', () => {
+    var parentDrawing = new DrawingMock();
+
+    // add some extra SVG elements
+    [...'123456789'].forEach(() => parentDrawing.domNode.append(document.createElementNS('http://www.w3.org/2000/svg', 'path')));
+
+    parentDrawing.domNode.childNodes.forEach(node => node.id = 'id-' + `${Math.random()}`.slice(2));
+
+    expect((new Set([...parentDrawing.domNode.childNodes].map(node => node.id))).size).toBe(9);
+
+    // add some bases
+    [...'123456789'].forEach(() => parentDrawing.bases.push(new NucleobaseMock()));
+
+    parentDrawing.bases.forEach(b => expect(b.id).toBeTruthy());
+
+    var domNode = parentDrawing.domNode.childNodes[4];
+
+    var base1 = parentDrawing.bases[7];
+    var base2 = parentDrawing.bases[2];
+
+    var bond1 = new CurvedBond(domNode, base1, base2);
+
+    var savedBond = bond1.save();
+
+    var bond2 = CurvedBond.recreate(savedBond, parentDrawing);
+
+    expect(bond2.domNode).toBe(domNode);
+
+    expect(bond2.base1).toBe(base1);
+    expect(bond2.base2).toBe(base2);
   });
 });
 
