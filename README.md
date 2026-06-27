@@ -206,7 +206,7 @@ var bond1 = CurvedBond.between(base1, base2);
 
 var savedBond = bond1.save();
 
-var bond2 = CurvedBond.create(savedBond, parentDrawing);
+var bond2 = CurvedBond.recreate(savedBond, parentDrawing);
 
 bond2.domNode === bond1.domNode; // true
 
