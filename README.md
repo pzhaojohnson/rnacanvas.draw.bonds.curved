@@ -136,7 +136,7 @@ when initiating the drag action, for instance.)
 // drag the starting point of the curved bond
 bond.drag(3, 4, { dragPoint: bond.atLength(0) });
 
-// drag the ending point of the curved bond
+// drag the end point of the curved bond
 bond.drag(3, 4, { dragPoint: bond.atLength(bond.length) });
 ```
 
