@@ -72,7 +72,7 @@ bond.id; // "id-12345"
 
 ### `readonly base1`
 
-Base 1 that the curved bond is between.
+Base 1 that the curved bond is attached to.
 
 ```javascript
 var drawing = new Drawing();
@@ -89,7 +89,7 @@ bond.base1 === base1; // true
 
 ### `readonly base2`
 
-Base 2 that the curved bond is between.
+Base 2 that the curved bond is attached to.
 
 ```javascript
 var drawing = new Drawing();
