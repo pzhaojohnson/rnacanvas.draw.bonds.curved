@@ -25,8 +25,13 @@ A bond that can have one or more curves in it
 Creates and returns a new curved bond between two bases.
 
 ```javascript
-var base1 = Nucleobase.create('A');
-var base2 = Nucleobase.create('U');
+var drawing = new Drawing();
+
+// necessary for many SVG calculations to work correctly
+document.body.append(drawing.domNode);
+
+var base1 = drawing.addBase('G');
+var base2 = drawing.addBase('C');
 
 var bond = CurvedBond.betweeen(base1, base2);
 
@@ -47,14 +52,54 @@ As with DOM elements in general,
 the ID of a curved bond shouldn't be changed after it's been set.
 
 ```javascript
+var drawing = new Drawing();
+
+document.body.append(drawing.domNode);
+
 var domNode = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
 domNode.id = 'id-12345';
 
-var base1 = Nucleobase.create('A');
-var base2 = Nucleobase.create('U');
+drawing.domNode.append(domNode);
+
+var base1 = drawing.addBase('G');
+var base2 = drawing.addBase('C');
 
 var bond = new CurvedBond(domNode, base1, base2);
 
 bond.id; // "id-12345"
+```
+
+### `readonly base1`
+
+Base 1 that the curved bond is between.
+
+```javascript
+var drawing = new Drawing();
+
+document.body.append(drawing.domNode);
+
+var base1 = drawing.addBase('G');
+var base2 = drawing.addBase('C');
+
+var bond = CurvedBond.between(base1, base2);
+
+bond.base1 === base1; // true
+```
+
+### `readonly base2`
+
+Base 2 that the curved bond is between.
+
+```javascript
+var drawing = new Drawing();
+
+document.body.append(drawing.domNode);
+
+var base1 = drawing.addBase('G');
+var base2 = drawing.addBase('C');
+
+var bond = CurvedBond.between(base1, base2);
+
+bond.base2 === base2; // true
 ```
