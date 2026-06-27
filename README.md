@@ -161,3 +161,55 @@ interface Collection {
   has(ele: SVGGraphicsElement): boolean;
 }
 ```
+
+### `save()`
+
+Returns the saved form of a curved bond,
+which is a JSON-stringifiable object containing the necessary information for recreating a curved bond.
+
+```javascript
+var drawing = new Drawing();
+
+document.body.append(drawing.domNode);
+
+var base1 = drawing.addBase('G');
+var base2 = drawing.addBase('C');
+
+var bond = CurvedBond.between(base1, base2);
+
+var savedBond = bond.save();
+
+savedBond.id === bond.id; // true
+
+savedBond.baseID1 === base1.id; // true
+savedBond.baseID2 === base2.id; // true
+
+// can be converted to JSON
+JSON.stringify(savedBond);
+```
+
+### `static recreate()`
+
+Attempts to recreate a saved curved bond given the parent drawing that its DOM node is in.
+
+Throws if unable to recreate a curved bond.
+
+```javascript
+var parentDrawing = new Drawing();
+
+document.body.append(parentDrawing.domNode);
+
+var base1 = parentDrawing.addBase('G');
+var base2 = parentDrawing.addBase('C');
+
+var bond1 = CurvedBond.between(base1, base2);
+
+var savedBond = bond1.save();
+
+var bond2 = CurvedBond.create(savedBond, parentDrawing);
+
+bond2.domNode === bond1.domNode; // true
+
+bond2.base1 === base1; // true
+bond2.base2 === base2; // true
+```
