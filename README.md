@@ -103,3 +103,61 @@ var bond = CurvedBond.between(base1, base2);
 
 bond.base2 === base2; // true
 ```
+
+### `drag()`
+
+Drags the curved bond by a vector (e.g., the movement of the mouse).
+
+```javascript
+var drawing = new Drawing();
+
+document.body.append(drawing.domNode);
+
+var base1 = drawing.addBase('G');
+var base2 = drawing.addBase('C');
+
+base1.centerPoint.x = 0;
+base1.centerPoint.y = 0;
+
+base2.centerPoint.x = 10;
+base2.centerPoiny.y = 20;
+
+var bond = CurvedBond.between(base1, base2);
+
+// drag by the vector (3, 4)
+bond.drag(3, 4);
+```
+Specifying the `dragPoint` gives control over which point of a curved bond gets dragged.
+
+(The `dragPoint` represents the point at which the mouse made contact with the curved bond
+when initiating the drag action, for instance.)
+
+```javascript
+// drag the starting point of the curved bond
+bond.drag(3, 4, { dragPoint: bond.atLength(0) });
+
+// drag the ending point of the curved bond
+bond.drag(3, 4, { dragPoint: bond.atLength(bond.length) });
+```
+
+Specifying the `dragGroup` can prevent dragging from taking place
+if bases 1 or 2 are already being dragged.
+
+(The `dragGroup` represents the other selected elements that are also being dragged with a curved bond.)
+
+```javascript
+// no dragging (base 1 is already being dragged)
+bond.drag(3, 4, { dragGroup: new Set([bond.base1.domNode]) });
+
+// no dragging (base 2 is already being dragged)
+bond.drag(3, 4, { dragGroup: new Set([bond.base2.domNode]) });
+```
+
+The `dragGroup` should fulfill the following `Collection` interface
+(for SVG graphics elements).
+
+```typescript
+interface Collection {
+  has(ele: SVGGraphicsElement): boolean;
+}
+```
