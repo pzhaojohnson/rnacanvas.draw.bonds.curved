@@ -125,7 +125,7 @@ bond.length === bond.domNode.getTotalLength(); // true
 
 ### `atLength()`
 
-Returns a point at the specified length along a curved bond,
+Returns the point at the specified length along a curved bond,
 including the direction of the curved bond at that point.
 
 ```javascript
