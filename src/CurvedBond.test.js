@@ -301,6 +301,23 @@ describe('`class CurvedBond`', () => {
     expect(d.toString()).toBeTruthy();
   });
 
+  test('`remove()`', () => {
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    var curvedBond = CurvedBond.between(base1, base2);
+
+    var drawing = new DrawingMock();
+
+    drawing.domNode.append(curvedBond.domNode);
+
+    expect(drawing.domNode.contains(curvedBond.domNode)).toBeTruthy();
+
+    curvedBond.remove();
+
+    expect(drawing.domNode.contains(curvedBond.domNode)).toBeFalsy();
+  });
+
   test('`save()`', () => {
     var base1 = new NucleobaseMock();
     var base2 = new NucleobaseMock();

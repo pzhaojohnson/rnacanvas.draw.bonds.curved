@@ -215,6 +215,10 @@ export class CurvedBond {
     this.#cacheBasePaddings();
   }
 
+  remove(): void {
+    this.domNode.remove();
+  }
+
   /**
    * Returns the saved form of the curved bond.
    */
