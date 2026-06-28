@@ -23,6 +23,9 @@ describe('`class CurvedBond`', () => {
     var base1 = new NucleobaseMock();
     var base2 = new NucleobaseMock();
 
+    base1.domNode.getBBox = () => ({ x: 0, y: 0, width: 5, height: 7.5 });
+    base2.domNode.getBBox = () => ({ x: 0, y: 0, width: 2, height: 12.5 });
+
     var bond = CurvedBond.between(base1, base2);
 
     // passes nucleobase references correctly
@@ -35,7 +38,9 @@ describe('`class CurvedBond`', () => {
 
     // assigns some default values (exact values are hard-coded to match `static between()` method)
     expect(bond.domNode.getAttribute('stroke')).toBe('black');
-    expect(bond.domNode.getAttribute('stroke-width')).toBe('1.5');
+
+    // adjust stroke width based on mean base height
+    expect(Number.parseFloat(bond.domNode.getAttribute('stroke-width'))).toBeCloseTo(1.45);
 
     // explicitly assigns fill of "none"
     expect(bond.domNode.getAttribute('fill')).toBe('none');

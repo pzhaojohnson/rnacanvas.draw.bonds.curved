@@ -20,11 +20,16 @@ import { isString } from '@rnacanvas/value-check';
 
 import { min, max } from '@rnacanvas/math';
 
+import { mean } from '@rnacanvas/math';
+
 export class CurvedBond {
   /**
    * Creates and returns a new curved bond between the two bases.
    */
   static between(base1: Nucleobase, base2: Nucleobase): CurvedBond {
+    let baseHeight1 = base1.domNode.getBBox().height;
+    let baseHeight2 = base2.domNode.getBBox().height;
+
     let domNode = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
     // assign a universally unique ID that begins with a letter (SVG element IDs must begin with a letter)
@@ -33,7 +38,7 @@ export class CurvedBond {
     // assign some default values
     domNode.setAttribute('stroke', 'black');
 
-    domNode.setAttribute('stroke-width', '1.5');
+    domNode.setAttribute('stroke-width', `${0.145 * mean([baseHeight1, baseHeight2])}`);
     domNode.setAttribute('stroke-opacity', '1');
 
     domNode.setAttribute('stroke-dasharray', '');
