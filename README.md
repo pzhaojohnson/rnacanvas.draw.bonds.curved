@@ -111,17 +111,32 @@ and the center point of base 1.
 
 Modifying the properties of this vector repositions the curved bond.
 
-<b>Note the direction of base padding 1 is expressed relative to the direction from base 1 to base 2.</b>
+<b>Note that the direction of base padding 1 is expressed relative to the direction from base 1 to base 2.</b>
 
 ```javascript
 // give base padding 1 a magnitude of 10
 curvedBond.basePadding1.magnitude = 10;
 
-// angle base padding 1 45 degrees away from the direction to base 2
+// angle 45 degrees away from the direction to base 2
 curvedBond.basePadding1.direction = Math.PI / 4;
 ```
 
 ### `basePadding2`
+
+A vector that represents the padding between the end point of the curved bond
+and the center point of base 2.
+
+Modifying the properties of this vector repositions the curved bond.
+
+<b>Note that the direction of base padding 2 is expressed relative to the direction from base 2 to base 1.</b>
+
+```javascript
+// give base padding 2 a magnitude of 10
+curvedBond.basePadding2.magnitude = 10;
+
+// angle -45 degrees away from the direction to base 1
+curvedBond.basePadding2.direction = -Math.PI / 4;
+```
 
 ### `readonly length`
 
