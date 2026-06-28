@@ -55,6 +55,13 @@ export class CurvedBond {
 
     let bond = new CurvedBond(domNode, base1, base2);
 
+    // give curved bonds some base paddings by default
+    bond.basePadding1.magnitude = 0.632 * baseHeight1;
+    bond.basePadding2.magnitude = 0.632 * baseHeight2;
+
+    bond.basePadding1.direction = Math.PI / 4;
+    bond.basePadding2.direction = -Math.PI / 4;
+
     return bond;
   }
 
