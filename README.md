@@ -203,7 +203,7 @@ interface Collection {
 
 ### `remove()`
 
-Removes the DOM node of a curved bond from whatever container node that it is in (e.g., a drawing).
+Removes the DOM node of a curved bond from whatever container node that it's in (e.g., a drawing).
 
 ```javascript
 curvedBond.remove();
