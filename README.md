@@ -104,6 +104,25 @@ var bond = CurvedBond.between(base1, base2);
 bond.base2 === base2; // true
 ```
 
+### `readonly length`
+
+The length of the curved bond.
+
+(Returns the same value as the `getTotalLength()` method of the underlying SVG path element.)
+
+```javascript
+var drawing = new Drawing();
+
+document.body.append(drawing.domNode);
+
+var base1 = drawing.addBase('G');
+var base2 = drawing.addBase('C');
+
+var bond = CurvedBond.between(base1, base2);
+
+bond.length === bond.domNode.getTotalLength(); // true
+```
+
 ### `drag()`
 
 Drags the curved bond by a vector (e.g., the movement of the mouse).
