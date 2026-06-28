@@ -130,7 +130,7 @@ including the direction of the curved bond at that point.
 
 ```javascript
 // the point at length 10 along the curved bond
-// (going from base 1 to base 2)
+// (in the direction from base 1 to base 2)
 var p = curvedBond.atLength(10);
 
 // X and Y coordinates
@@ -138,7 +138,6 @@ p.x;
 p.y;
 
 // the direction of the curved bond (in radians)
-// (going from base 1 to base 2)
 p.direction;
 ```
 
