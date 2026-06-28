@@ -128,6 +128,8 @@ bond.length === bond.domNode.getTotalLength(); // true
 Returns the point at the specified length along a curved bond,
 including the direction of the curved bond at that point.
 
+This method is similar to the `getPointAtLength()` method of the underlying SVG path element.
+
 ```javascript
 // the point at length 10 along the curved bond
 // (in the direction from base 1 to base 2)
