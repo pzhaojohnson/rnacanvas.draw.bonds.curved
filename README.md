@@ -201,6 +201,14 @@ interface Collection {
 }
 ```
 
+### `remove()`
+
+Removes the DOM node of a curved bond from whatever container node that it is in (e.g., a drawing).
+
+```javascript
+curvedBond.remove();
+```
+
 ### `save()`
 
 Returns the saved form of a curved bond,
