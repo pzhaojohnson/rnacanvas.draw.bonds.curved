@@ -213,14 +213,16 @@ export class CurvedBond {
       throw new Error(`Saved curved bond isn't an object: ${savedBond}.`);
     }
 
-    let id = savedBond.id;
+    // used to be saved under "pathId"
+    let id = savedBond.id ?? savedBond.pathId;
 
     if (!isString(id)) {
       throw new Error(`Saved curved bond ID isn't a string: ${id}.`);
     }
 
-    let baseID1 = savedBond.baseID1;
-    let baseID2 = savedBond.baseID2;
+    // used to be saved under "baseId1" and "baseId2"
+    let baseID1 = savedBond.baseID1 ?? savedBond.baseId1;
+    let baseID2 = savedBond.baseID2 ?? savedBond.baseId2;
 
     if (!isString(baseID1)) {
       throw new Error(`Saved curved bond base 1 ID isn't a string: ${baseID1}.`);

@@ -342,6 +342,21 @@ describe('`class CurvedBond`', () => {
 
     expect(bond2.base1).toBe(base1);
     expect(bond2.base2).toBe(base2);
+
+    var legacyFormat = {
+      pathId: domNode.id,
+
+      baseId1: base1.id,
+      baseId2: base2.id,
+    };
+
+    // check support for legacy formats
+    var bond3 = CurvedBond.recreate(legacyFormat, parentDrawing);
+
+    expect(bond3.domNode).toBe(domNode);
+
+    expect(bond3.base1).toBe(base1);
+    expect(bond3.base2).toBe(base2);
   });
 });
 
