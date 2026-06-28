@@ -33,13 +33,13 @@ document.body.append(drawing.domNode);
 var base1 = drawing.addBase('G');
 var base2 = drawing.addBase('C');
 
-var bond = CurvedBond.betweeen(base1, base2);
+var curvedBond = CurvedBond.betweeen(base1, base2);
 
-bond.base1 === base1; // true
-bond.base2 === base2; // true
+curvedBond.base1 === base1; // true
+curvedBond.base2 === base2; // true
 
 // the `static between()` method automatically assigns a UUID
-bond.domNode.id.length >= 36; // true
+curvedBond.domNode.id.length >= 36; // true
 ```
 
 ### `readonly id`
@@ -52,22 +52,9 @@ The ID of a curved bond.
 the ID of a curved bond shouldn't be changed after it's been set.</b>
 
 ```javascript
-var drawing = new Drawing();
+curvedBond.domNode.setAttribute('id', 'id-12345');
 
-document.body.append(drawing.domNode);
-
-var domNode = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-
-domNode.id = 'id-12345';
-
-drawing.domNode.append(domNode);
-
-var base1 = drawing.addBase('G');
-var base2 = drawing.addBase('C');
-
-var bond = new CurvedBond(domNode, base1, base2);
-
-bond.id; // "id-12345"
+curvedBond.id; // "id-12345"
 ```
 
 ### `readonly base1`
@@ -82,9 +69,9 @@ document.body.append(drawing.domNode);
 var base1 = drawing.addBase('G');
 var base2 = drawing.addBase('C');
 
-var bond = CurvedBond.between(base1, base2);
+var curvedBond = CurvedBond.between(base1, base2);
 
-bond.base1 === base1; // true
+curvedBond.base1 === base1; // true
 ```
 
 ### `readonly base2`
@@ -99,9 +86,9 @@ document.body.append(drawing.domNode);
 var base1 = drawing.addBase('G');
 var base2 = drawing.addBase('C');
 
-var bond = CurvedBond.between(base1, base2);
+var curvedBond = CurvedBond.between(base1, base2);
 
-bond.base2 === base2; // true
+curvedBond.base2 === base2; // true
 ```
 
 ### `basePadding1`
@@ -145,16 +132,7 @@ The length of the curved bond.
 (Returns the same value as the `getTotalLength()` method of the underlying SVG path element.)
 
 ```javascript
-var drawing = new Drawing();
-
-document.body.append(drawing.domNode);
-
-var base1 = drawing.addBase('G');
-var base2 = drawing.addBase('C');
-
-var bond = CurvedBond.between(base1, base2);
-
-bond.length === bond.domNode.getTotalLength(); // true
+curvedBond.length === curvedBond.domNode.getTotalLength(); // true
 ```
 
 ### `atLength()`
@@ -179,38 +157,26 @@ p.direction;
 
 ### `drag()`
 
-Drags the curved bond by a vector (e.g., the movement of the mouse).
+Drags a curved bond by the specified vector (e.g., the movement of the mouse).
 
 ```javascript
-var drawing = new Drawing();
-
-document.body.append(drawing.domNode);
-
-var base1 = drawing.addBase('G');
-var base2 = drawing.addBase('C');
-
-base1.centerPoint.x = 0;
-base1.centerPoint.y = 0;
-
-base2.centerPoint.x = 10;
-base2.centerPoiny.y = 20;
-
-var bond = CurvedBond.between(base1, base2);
-
 // drag by the vector (3, 4)
-bond.drag(3, 4);
+curvedBond.drag(3, 4);
 ```
+
 Specifying the `dragPoint` gives control over which point of a curved bond gets dragged.
 
 (The `dragPoint` represents the point at which the mouse made contact with the curved bond
 when initiating the drag action, for instance.)
 
+When specified, the closest "defining" point to the `dragPoint` is the point that gets dragged.
+
 ```javascript
-// drag the starting point of the curved bond
-bond.drag(3, 4, { dragPoint: bond.atLength(0) });
+// drag the start point of the curved bond
+curvedBond.drag(3, 4, { dragPoint: curvedBond.atLength(0) });
 
 // drag the end point of the curved bond
-bond.drag(3, 4, { dragPoint: bond.atLength(bond.length) });
+curvedBond.drag(3, 4, { dragPoint: curvedBond.atLength(bond.length) });
 ```
 
 Specifying the `dragGroup` can prevent dragging from taking place
@@ -220,10 +186,10 @@ if bases 1 or 2 are already being dragged.
 
 ```javascript
 // no dragging (base 1 is already being dragged)
-bond.drag(3, 4, { dragGroup: new Set([bond.base1.domNode]) });
+curvedBond.drag(3, 4, { dragGroup: new Set([curvedBond.base1.domNode]) });
 
 // no dragging (base 2 is already being dragged)
-bond.drag(3, 4, { dragGroup: new Set([bond.base2.domNode]) });
+curvedBond.drag(3, 4, { dragGroup: new Set([curvedBond.base2.domNode]) });
 ```
 
 The `dragGroup` should fulfill the following `Collection` interface
@@ -248,17 +214,17 @@ document.body.append(drawing.domNode);
 var base1 = drawing.addBase('G');
 var base2 = drawing.addBase('C');
 
-var bond = CurvedBond.between(base1, base2);
+var curvedBond = CurvedBond.between(base1, base2);
 
-var savedBond = bond.save();
+var savedCurvedBond = curvedBond.save();
 
-savedBond.id === bond.id; // true
+savedCurvedBond.id === curvedBond.id; // true
 
-savedBond.baseID1 === base1.id; // true
-savedBond.baseID2 === base2.id; // true
+savedCurvedBond.baseID1 === curvedBase1.id; // true
+savedCurvedBond.baseID2 === curvedBase2.id; // true
 
 // can be converted to JSON
-JSON.stringify(savedBond);
+JSON.stringify(savedCurvedBond);
 ```
 
 ### `static recreate()`
@@ -275,14 +241,14 @@ document.body.append(parentDrawing.domNode);
 var base1 = parentDrawing.addBase('G');
 var base2 = parentDrawing.addBase('C');
 
-var bond1 = CurvedBond.between(base1, base2);
+var curvedBond1 = CurvedBond.between(base1, base2);
 
-var savedBond = bond1.save();
+var savedCurvedBond = curvedBond1.save();
 
-var bond2 = CurvedBond.recreate(savedBond, parentDrawing);
+var curvedBond2 = CurvedBond.recreate(savedCurvedBond, parentDrawing);
 
-bond2.domNode === bond1.domNode; // true
+curvedBond2.domNode === curvedBond1.domNode; // true
 
-bond2.base1 === base1; // true
-bond2.base2 === base2; // true
+curvedBond2.base1 === base1; // true
+curvedBond2.base2 === base2; // true
 ```
