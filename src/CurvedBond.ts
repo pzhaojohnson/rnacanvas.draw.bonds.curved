@@ -18,6 +18,8 @@ import { isNonNullObject } from '@rnacanvas/value-check';
 
 import { isString } from '@rnacanvas/value-check';
 
+import { min, max } from '@rnacanvas/math';
+
 export class CurvedBond {
   /**
    * Creates and returns a new curved bond between the two bases.
@@ -138,6 +140,35 @@ export class CurvedBond {
 
   get length(): number {
     return this.domNode.getTotalLength();
+  }
+
+  atLength(length: number) {
+    length = length < 0 ? 0 : length;
+    length = length > this.length ? this.length : length;
+
+    let length1 = length - 0.005;
+    let length2 = length + 0.005;
+
+    // don't let lengths go out of bounds
+    length1 = max([length1, 0]);
+    length2 = min([length2, this.length]);
+
+    let p1 = Point.matching(this.domNode.getPointAtLength(length1));
+    let p2 = Point.matching(this.domNode.getPointAtLength(length2));
+
+    let mp = midpoint(p1, p2);
+
+    let direction = p1.directionTo(p2);
+
+    // don't return a nonfinite number
+    direction = Number.isFinite(direction) ? direction : 0;
+
+    return {
+      x: mp.x,
+      y: mp.y,
+
+      direction,
+    };
   }
 
   drag(x: number, y: number, options?: { dragPoint?: PointLike, dragGroup?: Collection<SVGGraphicsElement> }): void {

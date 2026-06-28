@@ -185,6 +185,57 @@ describe('`class CurvedBond`', () => {
     expect(bond.length).toBe(18.2991);
   });
 
+  test('`atLength()`', () => {
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    base1.centerPoint = { x: 10, y: 80 };
+    base2.centerPoint = { x: 50, y: 110 };
+
+    var bond = CurvedBond.between(base1, base2);
+
+    bond.domNode.getTotalLength = () => Point.matching(base1.centerPoint).distanceTo(base2.centerPoint);
+    expect(bond.domNode.getTotalLength()).toBeCloseTo(50);
+
+    bond.domNode.getPointAtLength = length => ({
+      x: base1.centerPoint.x + (length * Math.cos(Point.matching(base1.centerPoint).directionTo(base2.centerPoint))),
+      y: base1.centerPoint.y + (length * Math.sin(Point.matching(base1.centerPoint).directionTo(base2.centerPoint))),
+    });
+
+    // in the middle of the curved bond
+    expect(bond.atLength(5).x).toBeCloseTo(10 + 4);
+    expect(bond.atLength(5).y).toBeCloseTo(80 + 3);
+    expect(bond.atLength(5).direction).toBeCloseTo(0.6435011087932844);
+
+    // at the start point
+    expect(bond.atLength(0).x).toBeCloseTo(10);
+    expect(bond.atLength(0).y).toBeCloseTo(80);
+    expect(bond.atLength(0).direction).toBeCloseTo(0.6435011087932844);
+
+    // at the end point
+    expect(bond.atLength(50).x).toBeCloseTo(50);
+    expect(bond.atLength(50).y).toBeCloseTo(110);
+    expect(bond.atLength(50).direction).toBeCloseTo(0.6435011087932844);
+
+    // negative length
+    expect(bond.atLength(-10).x).toBeCloseTo(10);
+    expect(bond.atLength(-10).y).toBeCloseTo(80);
+    expect(bond.atLength(-10).direction).toBeCloseTo(0.6435011087932844);
+
+    // length greater than the length of the curved bond
+    expect(bond.atLength(50 + 10).x).toBeCloseTo(50);
+    expect(bond.atLength(50 + 10).y).toBeCloseTo(110);
+    expect(bond.atLength(50 + 10).direction).toBeCloseTo(0.6435011087932844);
+
+    // a curved bond with a length of zero
+    base2.centerPoint = { ...base1.centerPoint };
+    expect(bond.domNode.getTotalLength()).toBe(0);
+
+    expect(bond.atLength(10).x).toBeCloseTo(10);
+    expect(bond.atLength(10).y).toBeCloseTo(80);
+    expect(bond.atLength(10).direction).toBeCloseTo(0);
+  });
+
   test('`drag()`', () => {
     var base1 = new NucleobaseMock();
     var base2 = new NucleobaseMock();
