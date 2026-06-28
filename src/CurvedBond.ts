@@ -6,13 +6,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { D } from './D';
 
-import { midpoint } from '@rnacanvas/points.oopified';
-
 import { BasePadding } from './BasePadding';
 
-import { direction } from '@rnacanvas/points';
+import { Point, FinitePoint } from '@rnacanvas/points.oopified';
 
-import { Point } from '@rnacanvas/points.oopified';
+import { midpoint } from '@rnacanvas/points.oopified';
+
+import { distance, direction } from '@rnacanvas/points';
 
 import { isNonNullObject } from '@rnacanvas/value-check';
 
@@ -61,6 +61,18 @@ export class CurvedBond {
 
     bond.basePadding1.direction = Math.PI / 4;
     bond.basePadding2.direction = -Math.PI / 4;
+
+    let d = D.matching(bond.domNode.getAttribute('d'));
+
+    mp = midpoint(d.startPoint, d.endPoint);
+
+    // make slightly curved by default
+    d.trailingSegments[0].controlPoints[0] = FinitePoint.matching(mp.displaced({
+      magnitude: 0.25 * distance(d.startPoint, d.endPoint),
+      direction: direction(d.startPoint, d.endPoint) - (Math.PI / 2),
+    }));
+
+    bond.domNode.setAttribute('d', d.toString());
 
     return bond;
   }

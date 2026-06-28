@@ -10,7 +10,7 @@ import { DrawingMock } from './DrawingMock';
 
 import { D } from './D';
 
-import { Point } from '@rnacanvas/points.oopified';
+import { Point, FinitePoint } from '@rnacanvas/points.oopified';
 
 beforeAll(() => {
   if (!globalThis.SVGPathElement) {
@@ -53,6 +53,11 @@ describe('`class CurvedBond`', () => {
     // gives curved bonds a single quad-to segment by default
     expect(d.trailingSegments.length).toBe(1);
     expect(d.trailingSegments[0].controlPoints.length).toBe(1);
+
+    expect(() => FinitePoint.matching(d.startPoint)).not.toThrow();
+    expect(() => FinitePoint.matching(d.endPoint)).not.toThrow();
+
+    expect(() => FinitePoint.matching(d.trailingSegments[0].controlPoints[0])).not.toThrow();
   });
 
   test('`constructor()`', () => {
