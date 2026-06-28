@@ -136,6 +136,10 @@ export class CurvedBond {
     };
   }
 
+  get length(): number {
+    return this.domNode.getTotalLength();
+  }
+
   drag(x: number, y: number, options?: { dragPoint?: PointLike, dragGroup?: Collection<SVGGraphicsElement> }): void {
     let dragGroup = options?.dragGroup;
 

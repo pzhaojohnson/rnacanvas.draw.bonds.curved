@@ -174,6 +174,17 @@ describe('`class CurvedBond`', () => {
     expect(direction - Point.matching(base2.centerPoint).directionTo(base1.centerPoint)).toBeCloseTo(Math.PI / 3.75);
   });
 
+  test('`get length()`', () => {
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    var bond = CurvedBond.between(base1, base2);
+
+    bond.domNode.getTotalLength = () => 18.2991;
+
+    expect(bond.length).toBe(18.2991);
+  });
+
   test('`drag()`', () => {
     var base1 = new NucleobaseMock();
     var base2 = new NucleobaseMock();
