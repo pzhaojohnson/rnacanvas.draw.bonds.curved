@@ -125,6 +125,20 @@ describe('`class CurvedBond`', () => {
     expect(bond.id).toBe('id-9819817294124');
   });
 
+  test('`binds()`', () => {
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    var curvedBond = CurvedBond.between(base1, base2);
+
+    expect(curvedBond.binds(base1)).toBe(true);
+    expect(curvedBond.binds(base2)).toBe(true);
+
+    var base3 = new NucleobaseMock();
+
+    expect(curvedBond.binds(base3)).toBe(false);
+  });
+
   test('`get basePadding1()`', () => {
     var base1 = new NucleobaseMock();
     var base2 = new NucleobaseMock();

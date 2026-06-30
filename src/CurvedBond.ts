@@ -93,6 +93,15 @@ export class CurvedBond {
   }
 
   /**
+   * Returns `true` if the specified base is base 1 or 2 of the curved bond.
+   *
+   * Returns `false` otherwise.
+   */
+  binds(b: Nucleobase): boolean {
+    return b === this.base1 || b === this.base2;
+  }
+
+  /**
    * Note that the direction of base padding 1 is relative to the direction from base 1 to base 2.
    */
   get basePadding1() {
