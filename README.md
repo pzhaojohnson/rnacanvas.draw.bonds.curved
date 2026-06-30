@@ -91,6 +91,30 @@ var curvedBond = CurvedBond.between(base1, base2);
 curvedBond.base2 === base2; // true
 ```
 
+### `binds()`
+
+Returns `true` if the specified base is base 1 or 2 of a curved bond.
+
+Returns `false` otherwise.
+
+```javascript
+var drawing = new Drawing();
+
+document.body.append(drawing.domNode);
+
+var base1 = drawing.addBase('A');
+var base2 = drawing.addBase('U');
+
+var curvedBond = CurvedBond.between(base1, base2);
+
+curvedBond.binds(base1); // true
+curvedBond.binds(base2); // true
+
+var base3 = drawing.addBase('A');
+
+curvedBond.binds(base3); // false
+```
+
 ### `basePadding1`
 
 A vector that represents the padding between the start point of the curved bond
