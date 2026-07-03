@@ -36,12 +36,12 @@ export class CurvedBond {
     domNode.id = 'id-' + uuidv4();
 
     // assign some default values
-    domNode.setAttribute('stroke', 'black');
+    domNode.setAttribute('stroke', '#333');
 
-    domNode.setAttribute('stroke-width', `${0.145 * mean([baseHeight1, baseHeight2])}`);
+    domNode.setAttribute('stroke-width', `${0.097 * mean([baseHeight1, baseHeight2])}`);
     domNode.setAttribute('stroke-opacity', '1');
 
-    domNode.setAttribute('stroke-dasharray', '');
+    domNode.setAttribute('stroke-dasharray', '2 1.5');
     domNode.setAttribute('stroke-linecap', '');
     domNode.setAttribute('stroke-linejoin', '');
 
@@ -59,8 +59,8 @@ export class CurvedBond {
     bond.basePadding1.magnitude = 0.632 * baseHeight1;
     bond.basePadding2.magnitude = 0.632 * baseHeight2;
 
-    bond.basePadding1.direction = Math.PI / 4;
-    bond.basePadding2.direction = -Math.PI / 4;
+    bond.basePadding1.direction = -Math.PI / 4;
+    bond.basePadding2.direction = Math.PI / 4;
 
     let d = D.matching(bond.domNode.getAttribute('d'));
 

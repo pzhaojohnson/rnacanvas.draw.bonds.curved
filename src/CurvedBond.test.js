@@ -37,10 +37,10 @@ describe('`class CurvedBond`', () => {
     expect(bond.domNode.id).toMatch(uuidRegex);
 
     // assigns some default values (exact values are hard-coded to match `static between()` method)
-    expect(bond.domNode.getAttribute('stroke')).toBe('black');
+    expect(bond.domNode.getAttribute('stroke')).toBe('#333');
 
     // adjust stroke width based on mean base height
-    expect(Number.parseFloat(bond.domNode.getAttribute('stroke-width'))).toBeCloseTo(1.45);
+    expect(Number.parseFloat(bond.domNode.getAttribute('stroke-width'))).toBeCloseTo(0.97);
 
     // explicitly assigns fill of "none"
     expect(bond.domNode.getAttribute('fill')).toBe('none');
