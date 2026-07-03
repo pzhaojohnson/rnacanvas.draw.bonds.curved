@@ -168,6 +168,8 @@ describe('`class CurvedBond`', () => {
     // repositions bond
     let direction = Point.matching(base1.centerPoint).directionTo(d.startPoint);
     expect(direction - Point.matching(base1.centerPoint).directionTo(base2.centerPoint)).toBeCloseTo(Math.PI / 4.5);
+
+    expect(d.toString()).toBe('M 13.000274885344481 -26.071836451573255 Q 36.00013744267224 -8.535918225786627 59 9');
   });
 
   test('`get basePadding2()`', () => {
@@ -199,6 +201,8 @@ describe('`class CurvedBond`', () => {
     // repositions bond
     let direction = Point.matching(base2.centerPoint).directionTo(d.endPoint);
     expect(direction - Point.matching(base2.centerPoint).directionTo(base1.centerPoint)).toBeCloseTo(Math.PI / 3.75);
+
+    expect(d.toString()).toBe('M 22 -80 Q 53.60579774666077 -36.42549151516569 85.21159549332154 7.149016969668627');
   });
 
   test('`get length()`', () => {
@@ -289,6 +293,8 @@ describe('`class CurvedBond`', () => {
 
     // repositions the curved bond
     expect(Point.matching(controlPoint).distanceTo(d.trailingSegments[0].controlPoints[0])).toBeCloseTo(2 * 5);
+
+    expect(d.toString()).toBe('M 100 -250.1 Q 613.525 -127.04999999999995 820 340');
 
     // drag point specified
     bond.drag(5, 12, { dragPoint: { x: 820, y: 340 } });

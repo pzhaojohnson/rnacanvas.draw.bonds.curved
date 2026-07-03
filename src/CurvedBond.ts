@@ -305,7 +305,7 @@ export class CurvedBond {
 
     let mp = midpoint(d.startPoint, d.endPoint);
 
-    let displacements: [Point, Vector][] = d.interveningPoints.map(p => [Point.matching(p), mp.displacementTo(p)]);
+    let displacements: [Point, Vector][] = d.interveningPoints.map(p => [p, mp.displacementTo(p)]);
 
     // relativize displacements
     displacements.forEach(([_, v]) => v.direction -= direction(d.startPoint, d.endPoint));
