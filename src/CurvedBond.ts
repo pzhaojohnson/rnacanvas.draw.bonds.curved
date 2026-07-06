@@ -22,11 +22,11 @@ import { min, max } from '@rnacanvas/math';
 
 import { mean } from '@rnacanvas/math';
 
-export class CurvedBond {
+export class CurvedBond<B extends Nucleobase> {
   /**
    * Creates and returns a new curved bond between the two bases.
    */
-  static between(base1: Nucleobase, base2: Nucleobase): CurvedBond {
+  static between<B extends Nucleobase>(base1: B, base2: B): CurvedBond<B> {
     let baseHeight1 = base1.domNode.getBBox().height;
     let baseHeight2 = base2.domNode.getBBox().height;
 
@@ -77,7 +77,7 @@ export class CurvedBond {
     return bond;
   }
 
-  constructor(readonly domNode: SVGPathElement, readonly base1: Nucleobase, readonly base2: Nucleobase) {
+  constructor(readonly domNode: SVGPathElement, readonly base1: B, readonly base2: B) {
     // don't overwrite previously cached base paddings
     if (!domNode.dataset.basePadding1 && !domNode.dataset.basePadding2) {
       this.#cacheBasePaddings();
@@ -97,7 +97,7 @@ export class CurvedBond {
    *
    * Returns `false` otherwise.
    */
-  binds(b: Nucleobase): boolean {
+  binds(b: B): boolean {
     return b === this.base1 || b === this.base2;
   }
 
@@ -245,7 +245,7 @@ export class CurvedBond {
    *
    * Throws if unable to.
    */
-  static recreate(savedBond: unknown, parentDrawing: Drawing): CurvedBond | never {
+  static recreate<B extends Nucleobase>(savedBond: unknown, parentDrawing: Drawing<B>): CurvedBond<B> | never {
     if (!isNonNullObject(savedBond)) {
       throw new Error(`Saved curved bond isn't an object: ${savedBond}.`);
     }
