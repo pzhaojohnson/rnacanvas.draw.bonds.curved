@@ -192,30 +192,38 @@ describe('`class D`', () => {
   });
 
   test('`drag()`', () => {
-    var d = D.matching('M 10 20 L 50 100');
+    var d = D.matching('M 10 20 Q 125 250 50 100');
 
-    // dragging the start point
+    // dragging near the start point
     d.drag(-4, 56, { dragPoint: { x: 8, y: 9 } });
 
-    expect(d.startPoint).toStrictEqual(new FinitePoint(6, 76));
+    // control point was moved (must multiply X and Y components of drag vector by 2)
+    expect(d.segments[1].controlPoints[0]).toStrictEqual(new FinitePoint(117, 362));
 
-    // dragging the end point
+    // start point not moved
+    expect(d.startPoint).toStrictEqual(new FinitePoint(10, 20));
+
+    // dragging near the end point
     d.drag(-19, -100, { dragPoint: { x: 48, y: 101 } });
 
-    expect(d.endPoint).toStrictEqual(new FinitePoint(31, 0));
+    // control point was moved (must multiply X and Y components of drag vector by 2)
+    expect(d.segments[1].controlPoints[0]).toStrictEqual(new FinitePoint(79, 162));
 
+    // end point not moved
+    expect(d.endPoint).toStrictEqual(new FinitePoint(50, 100));
+
+    // multiple intervening points
     var d = D.matching('M -55 100 L 20 30 Q 80 100 201 5 C 30 20 1 2 -8 -10');
 
-    // the point to drag
-    var p = d.segments[3].controlPoints[1];
+    // the point to be dragged
+    var p = d.segments[2].endPoint;
 
-    // dragging a control point
-    d.drag(-12, 25, { dragPoint: { x: 0.5, y: 3 } });
+    // dragging an intervening point that's not a control point
+    d.drag(-12, 25, { dragPoint: { x: 199, y: 3 } });
 
-    // must multiply the X and Y components of the drag vector by 2 (for control points)
-    expect(d.segments[3].controlPoints[1]).toStrictEqual(new FinitePoint(-23, 52));
+    expect(d.segments[2].endPoint).toStrictEqual(new FinitePoint(189, 30));
 
     // modifies the point in place (i.e., doesn't create a new "dragged" point)
-    expect(d.segments[3].controlPoints[1]).toBe(p);
+    expect(d.segments[2].endPoint).toBe(p);
   });
 });

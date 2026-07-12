@@ -100,10 +100,11 @@ export class D {
    * (e.g., the point on the curve that was clicked on at the start of dragging).
    */
   drag(x: number, y: number, options: { dragPoint: { x: number, y: number } }): void {
-    let definingPoints = new Points(this.definingPoints);
+    // don't drag the start or final end point
+    let interveningPoints = new Points(this.interveningPoints);
 
     // the point to drag
-    let p = definingPoints.closest(options.dragPoint);
+    let p = interveningPoints.closest(options.dragPoint);
 
     // multiply by 2 for control points (since control points aren't directly on the curve)
     if (this.controlPoints.includes(p)) {

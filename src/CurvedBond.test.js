@@ -296,16 +296,21 @@ describe('`class CurvedBond`', () => {
 
     expect(d.toString()).toBe('M 100 -250.1 Q 613.525 -127.04999999999995 820 340');
 
-    // drag point specified
-    bond.drag(5, 12, { dragPoint: { x: 820, y: 340 } });
+    // multiple intervening points
+    bond.domNode.setAttribute('d', 'M 0 0 Q 30 50 -10 -20 C 80 200 100 101 12 3');
 
     var d = D.matching(bond.domNode.getAttribute('d'));
 
-    // repositioned the end point
-    expect(Point.matching(base2.centerPoint).distanceTo(d.endPoint)).toBeCloseTo(13);
+    // the point to be dragged
+    var p = d.trailingSegments[1].controlPoints[1];
 
-    // caches base paddings
-    expect(JSON.parse(bond.domNode.dataset.basePadding2).magnitude).toBeCloseTo(13);
+    // drag point specified
+    bond.drag(5, 12, { dragPoint: { x: 99, y: 102.5 } });
+
+    var d = D.matching(bond.domNode.getAttribute('d'));
+
+    // repositioned the correct intervening point
+    expect(Point.matching(p).distanceTo(d.trailingSegments[1].controlPoints[1])).toBeCloseTo(2 * 13);
 
     var d = D.matching(bond.domNode.getAttribute('d'));
 
@@ -319,6 +324,11 @@ describe('`class CurvedBond`', () => {
     expect(bond.domNode.getAttribute('d')).toBe(d.toString());
 
     expect(d.toString()).toBeTruthy();
+
+    // still drags the curved bond if other things are being dragged
+    bond.drag(50, 100, { dragGroup: new Set([(new NucleobaseMock()).domNode]) });
+
+    expect(bond.domNode.getAttribute('d')).not.toEqual(d.toString());
   });
 
   test('`remove()`', () => {
