@@ -45,8 +45,8 @@ describe('`class CurvedBond`', () => {
     // explicitly assigns fill of "none"
     expect(bond.domNode.getAttribute('fill')).toBe('none');
 
-    expect(bond.basePadding1.magnitude).toBeCloseTo(0.632 * 7.5);
-    expect(bond.basePadding2.magnitude).toBeCloseTo(0.632 * 12.5);
+    expect(bond.basePadding1.magnitude).toBeCloseTo(0.591 * 7.5);
+    expect(bond.basePadding2.magnitude).toBeCloseTo(0.591 * 12.5);
 
     var d = D.matching(bond.domNode.getAttribute('d'));
 
