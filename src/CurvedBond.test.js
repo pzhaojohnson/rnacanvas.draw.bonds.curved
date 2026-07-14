@@ -267,6 +267,27 @@ describe('`class CurvedBond`', () => {
     expect(bond.atLength(10).direction).toBeCloseTo(0);
   });
 
+  test('`get definingPoints()`', () => {
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    var bond = CurvedBond.between(base1, base2);
+
+    bond.domNode.setAttribute('d', 'M 0 -10 Q 50 200 1 9 C 10 12 -200 -300 0 0');
+
+    expect(bond.definingPoints.toArray().map(p => [p.x, p.y])).toStrictEqual([
+      [0, -10],
+      [50, 200], [1, 9],
+      [10, 12], [-200, -300], [0, 0]
+    ]);
+
+    expect(bond.definingPoints.closest({ x: 49, y: 210 }).x).toBe(50);
+    expect(bond.definingPoints.closest({ x: 49, y: 210 }).y).toBe(200);
+
+    expect(bond.definingPoints.closest({ x: 0, y: 9 }).x).toBe(1);
+    expect(bond.definingPoints.closest({ x: 0, y: 9 }).y).toBe(9);
+  });
+
   test('`drag()`', () => {
     var base1 = new NucleobaseMock();
     var base2 = new NucleobaseMock();

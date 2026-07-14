@@ -10,6 +10,8 @@ import { BasePadding } from './BasePadding';
 
 import { Point, FinitePoint } from '@rnacanvas/points.oopified';
 
+import { Points } from './Points';
+
 import { midpoint } from '@rnacanvas/points.oopified';
 
 import { distance, direction } from '@rnacanvas/points';
@@ -201,6 +203,26 @@ export class CurvedBond<B extends Nucleobase> {
       y: mp.y,
 
       direction,
+    };
+  }
+
+  /**
+   * The points that define the path of a curved bond.
+   */
+  get definingPoints() {
+    let d = D.matching(this.domNode.getAttribute('d'));
+
+    let toArray: () => PointLike[] = () => d.definingPoints;
+
+    let closest: (p: PointLike) => PointLike = (p: PointLike) => (new Points(d.definingPoints)).closest(p);
+
+    return {
+      toArray,
+
+      /**
+       * Returns the closest defining point to a given point.
+       */
+      closest,
     };
   }
 
