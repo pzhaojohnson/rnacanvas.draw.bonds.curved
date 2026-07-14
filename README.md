@@ -179,6 +179,27 @@ p.y;
 p.direction;
 ```
 
+### `readonly definingPoints`
+
+Represents the points that define the path of a curved bond
+(e.g., the starting point, control points in quad-to and cube-to segments, ending points).
+
+```javascript
+var d = curvedBond.domNode.getAttribute('d');
+
+// an example path definition
+d; // "M 0 0 Q 10 20 50 100"
+
+var points = curvedBond.definingPoints.toArray().map(p => [p.x, p.y]);
+
+points; // [[0, 0], [10, 20], [50, 100]]
+
+// returns the closest defining point to a given point
+var p = curvedBond.definingPoints.closest({ x: 9, y: 21 });
+
+p; // { x: 10, y: 20 }
+```
+
 ### `drag()`
 
 Drags a curved bond by the specified vector (e.g., the movement of the mouse).
