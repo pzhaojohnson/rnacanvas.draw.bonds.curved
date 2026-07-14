@@ -184,6 +184,8 @@ p.direction;
 Represents the points that define the path of a curved bond
 (e.g., the starting point, control points in quad-to and cube-to segments, ending points).
 
+Points are kept in order (corresponding to the order that they are in the path definition of a curved bond).
+
 ```javascript
 var d = curvedBond.domNode.getAttribute('d');
 
