@@ -320,18 +320,22 @@ describe('`class CurvedBond`', () => {
     // multiple intervening points
     bond.domNode.setAttribute('d', 'M 0 0 Q 30 50 -10 -20 C 80 200 100 101 12 3');
 
-    var d = D.matching(bond.domNode.getAttribute('d'));
-
-    // the point to be dragged
-    var p = d.trailingSegments[1].controlPoints[1];
+    bond.basePadding1.magnitude = 0;
+    bond.basePadding2.magnitude = 0;
 
     // drag point specified
-    bond.drag(5, 12, { dragPoint: { x: 99, y: 102.5 } });
+    bond.drag(-3, 4, { dragPoint: { x: base1.centerPoint.x + 0.75, y: base1.centerPoint.y + 0.1 } });
+    bond.drag(5, 12, { dragPoint: { x: base2.centerPoint.x + 1, y: base2.centerPoint.y - 0.5 } });
 
     var d = D.matching(bond.domNode.getAttribute('d'));
 
-    // repositioned the correct intervening point
-    expect(Point.matching(p).distanceTo(d.trailingSegments[1].controlPoints[1])).toBeCloseTo(2 * 13);
+    // repositioned the start point and final end point
+    expect(Point.matching(base1.centerPoint).distanceTo(d.startPoint)).toBeCloseTo(5);
+    expect(Point.matching(base2.centerPoint).distanceTo(d.endPoint)).toBeCloseTo(13);
+
+    // cached base paddings
+    expect(JSON.parse(bond.domNode.dataset.basePadding1).magnitude).toBeCloseTo(5);
+    expect(JSON.parse(bond.domNode.dataset.basePadding2).magnitude).toBeCloseTo(13);
 
     var d = D.matching(bond.domNode.getAttribute('d'));
 

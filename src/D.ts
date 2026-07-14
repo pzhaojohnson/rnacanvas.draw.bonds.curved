@@ -96,15 +96,14 @@ export class D {
   }
 
   /**
-   * The `dragPoint` is the point at which dragging was initiated from
-   * (e.g., the point on the curve that was clicked on at the start of dragging).
+   * The `dragPoint` is the point at which dragging should take place from
+   * (e.g., the point on the curve that is being clicked on during dragging).
    */
   drag(x: number, y: number, options: { dragPoint: { x: number, y: number } }): void {
-    // don't drag the start or final end point
-    let interveningPoints = new Points(this.interveningPoints);
+    let definingPoints = new Points(this.definingPoints);
 
     // the point to drag
-    let p = interveningPoints.closest(options.dragPoint);
+    let p = definingPoints.closest(options.dragPoint);
 
     // multiply by 2 for control points (since control points aren't directly on the curve)
     if (this.controlPoints.includes(p)) {
