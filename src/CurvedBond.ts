@@ -2,6 +2,8 @@ import type { Drawing } from './Drawing';
 
 import type { Nucleobase } from './Nucleobase';
 
+import { Path } from '@rnacanvas/draw.svg';
+
 import { v4 as uuidv4 } from 'uuid';
 
 import { D } from './D';
@@ -204,6 +206,22 @@ export class CurvedBond<B extends Nucleobase> {
 
       direction,
     };
+  }
+
+  /**
+   * Returns the closest point along the curved bond to a specified point.
+   *
+   * The `precision` option corresponds to the margin for error in the closest point calculation.
+   *
+   * (Higher margin for error speeds up calculation.)
+   *
+   * The length along the curved bond that the closest point is at is also returned within the returned closest point object
+   * (as the `length` property).
+   *
+   * This method will throw if a precision of zero or a negative precision are specified.
+   */
+  closestPoint(p: PointLike, options?: { precision?: number }) {
+    return (new Path(this.domNode)).closestPoint(p, options);
   }
 
   /**

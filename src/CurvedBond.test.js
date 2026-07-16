@@ -267,6 +267,36 @@ describe('`class CurvedBond`', () => {
     expect(bond.atLength(10).direction).toBeCloseTo(0);
   });
 
+  test('`closestPoint()`', () => {
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    var bond = CurvedBond.between(base1, base2);
+
+    // make a horizontal line
+    bond.domNode.setAttribute('d', 'M 10 20 L 90 20');
+
+    bond.domNode.getTotalLength = () => 80;
+
+    bond.domNode.getPointAtLength = length => ({ x: 10 + length, y: 20 });
+
+    // without specifying precision
+    expect(Math.abs(bond.closestPoint({ x: 57, y: 18 }).x - 57)).toBeLessThanOrEqual(5);
+    expect(Math.abs(bond.closestPoint({ x: 57, y: 18 }).y - 20)).toBeLessThanOrEqual(5);
+    expect(Math.abs(bond.closestPoint({ x: 57, y: 18 }).length - 47)).toBeLessThanOrEqual(5);
+
+    // specifying precision
+    expect(Math.abs(bond.closestPoint({ x: 57, y: 18 }, { precision: 0.5 }).x - 57)).toBeLessThanOrEqual(0.5);
+    expect(Math.abs(bond.closestPoint({ x: 57, y: 18 }, { precision: 0.5 }).y - 20)).toBeLessThanOrEqual(0.5);
+    expect(Math.abs(bond.closestPoint({ x: 57, y: 18 }, { precision: 0.5 }).length - 47)).toBeLessThanOrEqual(0.5);
+
+    // specifying a precision of zero
+    expect(() => bond.closestPoint({ x: 57, y: 18 }, { precision: 0 })).toThrow();
+
+    // specifying negative precision
+    expect(() => bond.closestPoint({ x: 57, y: 18 }, { precision: -1 })).toThrow();
+  });
+
   test('`get definingPoints()`', () => {
     var base1 = new NucleobaseMock();
     var base2 = new NucleobaseMock();
