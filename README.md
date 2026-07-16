@@ -179,6 +179,41 @@ p.y;
 p.direction;
 ```
 
+### `closestPoint()`
+
+Returns the closest point along a curved bond to a specified point.
+
+(The length along the curved bond at which the closest point is also returned as the `length` property.)
+
+```javascript
+curvedBond.base1.centerPoint.x = 0;
+curvedBond.base1.centerPoint.y = 0;
+
+curvedBond.base2.centerPoint.x = 100;
+curvedBond.base2.centerPoint.y = 0;
+
+curvedBond.basePadding1.magnitude = 0;
+curvedBond.basePadding2.magnitude = 0;
+
+// make a horizontal line
+curvedBond.domNode.setAttribute('d', 'M 0 0 Q 50 0 100 0');
+
+var p = curvedBond.closestPoint({ x: 31, y: 5 });
+
+p; // { x: 31, y: 0, length: 31 }
+```
+
+The `precision` option roughly corresponds to the margin for error in the closest point calculation.
+
+(Higher margin for error speeds up calculation.)
+
+```javascript
+var p = curvedBond.closestPoint({ x: 31, y: 5 }, { precision: 20 });
+
+// is within 20 of the true closest point
+p; // { x: 40, y: 0, length: 40 }
+```
+
 ### `readonly definingPoints`
 
 Represents the points that define the path of a curved bond
