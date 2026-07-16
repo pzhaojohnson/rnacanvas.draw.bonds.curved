@@ -183,7 +183,7 @@ p.direction;
 
 Returns the closest point along a curved bond to a specified point.
 
-(The length along the curved bond at which the closest point is also returned as the `length` property.)
+(The length along the curved bond that the closest point is at is also returned as the `length` property.)
 
 ```javascript
 curvedBond.base1.centerPoint.x = 0;
