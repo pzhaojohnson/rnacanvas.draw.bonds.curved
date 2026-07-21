@@ -9,6 +9,50 @@ import { TrailingSegment } from './TrailingSegment';
 import { FinitePoint } from '@rnacanvas/points.oopified';
 
 describe('`class CompleteSegment`', () => {
+  test('`startPoint`', () => {
+    var startPoint = { x: -11, y: 27 };
+
+    var trailingSegment = new TrailingSegment([], new FinitePoint(0, 0));
+
+    var completeSegment = new CompleteSegment(startPoint, trailingSegment);
+
+    expect(completeSegment.startPoint.x).toBe(-11);
+    expect(completeSegment.startPoint.y).toBe(27);
+  });
+
+  test('`controlPoints`', () => {
+    var startPoint = { x: 0, y: 0 };
+
+    var trailingSegment = new TrailingSegment(
+      [
+        new FinitePoint(80, 220),
+        new FinitePoint(11, -12),
+      ],
+      new FinitePoint(0, 0),
+    );
+
+    var completeSegment = new CompleteSegment(startPoint, trailingSegment);
+
+    expect(completeSegment.controlPoints.length).toBe(2);
+
+    expect(completeSegment.controlPoints[0].x).toBe(80);
+    expect(completeSegment.controlPoints[0].y).toBe(220);
+
+    expect(completeSegment.controlPoints[1].x).toBe(11);
+    expect(completeSegment.controlPoints[1].y).toBe(-12);
+  });
+
+  test('`endPoint`', () => {
+    var startPoint = { x: 0, y: 0 };
+
+    var trailingSegment = new TrailingSegment([], new FinitePoint(-12, -1000));
+
+    var completeSegment = new CompleteSegment(startPoint, trailingSegment);
+
+    expect(completeSegment.endPoint.x).toBe(-12);
+    expect(completeSegment.endPoint.y).toBe(-1000);
+  });
+
   test('`closestPoint()`', () => {
     var startPoint = { x: 25, y: -20 };
 

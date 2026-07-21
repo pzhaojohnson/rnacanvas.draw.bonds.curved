@@ -3,14 +3,18 @@ import type { TrailingSegment } from './TrailingSegment';
 import { AbstractPath } from '@rnacanvas/draw.svg';
 
 export class CompleteSegment {
-  readonly #startPoint;
-
   readonly #trailingSegment;
 
-  constructor(startPoint: Point, trailingSegment: TrailingSegment) {
-    this.#startPoint = startPoint;
-
+  constructor(readonly startPoint: Point, trailingSegment: TrailingSegment) {
     this.#trailingSegment = trailingSegment;
+  }
+
+  get controlPoints() {
+    return this.#trailingSegment.controlPoints;
+  }
+
+  get endPoint() {
+    return this.#trailingSegment.endPoint;
   }
 
   /**
@@ -24,7 +28,7 @@ export class CompleteSegment {
     let precision = options?.precision ?? 5;
 
     let path = new AbstractPath(
-      `M ${this.#startPoint.x} ${this.#startPoint.y} ${this.#trailingSegment.toString()}`
+      `M ${this.startPoint.x} ${this.startPoint.y} ${this.#trailingSegment.toString()}`
     );
 
     return path.closestPoint(p, { precision });
