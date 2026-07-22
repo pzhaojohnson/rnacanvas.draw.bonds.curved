@@ -230,9 +230,9 @@ export class CurvedBond<B extends Nucleobase> {
   get definingPoints() {
     let d = D.matching(this.domNode.getAttribute('d'));
 
-    let toArray: () => PointLike[] = () => d.definingPoints;
+    let toArray: () => PointLike[] = () => d.definingPoints.toArray();
 
-    let closest: (p: PointLike) => PointLike = (p: PointLike) => (new Points(d.definingPoints)).closest(p);
+    let closest: (p: PointLike) => PointLike = (p: PointLike) => (new Points(d.definingPoints.toArray())).closest(p);
 
     return {
       toArray,

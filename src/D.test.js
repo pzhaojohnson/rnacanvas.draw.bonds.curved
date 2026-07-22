@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { D } from './D';
 
 import { MoveToSegment } from './MoveToSegment';
@@ -14,21 +18,21 @@ describe('`class D`', () => {
     var d = D.matching('M -10 2 Q 50 100 -2.5 -8');
 
     [[-10, 2], [50, 100], [-2.5, -8]].forEach((coordinates, i) => {
-      expect(d.definingPoints[i]).toStrictEqual(new FinitePoint(...coordinates));
+      expect(d.definingPoints.toArray()[i]).toStrictEqual(new FinitePoint(...coordinates));
     });
 
     // multiple trailing segments of different types
     var d = D.matching('M 0 3 L 50 -100 Q 50 80 -2.9 -12 C 50 200 1 2 -12 15');
 
     [[0, 3], [50, -100], [50, 80], [-2.9, -12], [50, 200], [1, 2], [-12, 15]].forEach((coordinates, i) => {
-      expect(d.definingPoints[i]).toStrictEqual(new FinitePoint(...coordinates));
+      expect(d.definingPoints.toArray()[i]).toStrictEqual(new FinitePoint(...coordinates));
     });
 
     // converts relative paths to absolute paths
     var d = D.matching('M 100 10 q 50 -2 -50 25 q 80 20 1 5');
 
     [[100, 10], [150, 8], [50, 35], [130, 55], [51, 40]].forEach((coordinates, i) => {
-      expect(d.definingPoints[i]).toStrictEqual(new FinitePoint(...coordinates));
+      expect(d.definingPoints.toArray()[i]).toStrictEqual(new FinitePoint(...coordinates));
     });
 
     // undefined
@@ -98,14 +102,28 @@ describe('`class D`', () => {
     var d = D.matching('M -10 2 Q 50 100 -2.5 -8');
 
     [[-10, 2], [50, 100], [-2.5, -8]].forEach((coordinates, i) => {
-      expect(d.definingPoints[i]).toStrictEqual(new FinitePoint(...coordinates));
+      expect(d.definingPoints.toArray()[i]).toStrictEqual(new FinitePoint(...coordinates));
     });
 
     // multiple trailing segments of different types
     var d = D.matching('M 0 3 L 50 -100 Q 50 80 -2.9 -12 C 50 200 1 2 -12 15');
 
     [[0, 3], [50, -100], [50, 80], [-2.9, -12], [50, 200], [1, 2], [-12, 15]].forEach((coordinates, i) => {
-      expect(d.definingPoints[i]).toStrictEqual(new FinitePoint(...coordinates));
+      expect(d.definingPoints.toArray()[i]).toStrictEqual(new FinitePoint(...coordinates));
+    });
+
+    // multiple trailing segments
+    var d = D.matching('M 10 -10 Q 48 90 100 -10 C 200 -250 215 30 300 -10');
+
+    // approximate as a horizontal line for testing purposes
+    SVGElement.prototype.getPointAtLength = length => ({ x: 10 + length, y: -10 });
+
+    SVGElement.prototype.getTotalLength = () => 300 - 10;
+
+    // must anchor control points (a default precision of 5 is also assumed here)
+    [[10, -10], [48, -10], [100, -10], [200, -10], [215, -10], [300, -10]].forEach(([x, y], i) => {
+      expect(Math.abs(d.definingPoints.anchored()[i].x - x)).toBeLessThanOrEqual(5);
+      expect(Math.abs(d.definingPoints.anchored()[i].y - y)).toBeLessThanOrEqual(5);
     });
   });
 

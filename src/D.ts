@@ -4,11 +4,15 @@ import { MoveToSegment } from './MoveToSegment';
 
 import { TrailingSegment } from './TrailingSegment';
 
+import { CompleteSegment } from './CompleteSegment';
+
 import type { FinitePoint } from '@rnacanvas/points.oopified';
 
 import { Points } from './Points';
 
 import { last } from '@rnacanvas/utilities';
+
+import { consecutivePairs } from '@rnacanvas/utilities';
 
 import { isString } from '@rnacanvas/value-check';
 
@@ -52,14 +56,44 @@ export class D {
     ];
   }
 
+  get #completeSegments() {
+    return [
+      new CompleteSegment(this.startPoint, this.trailingSegments[0]),
+      ...consecutivePairs(this.trailingSegments).map(([previousSegment, trailingSegment]) => new CompleteSegment(previousSegment.endPoint, trailingSegment)),
+    ];
+  }
+
   /**
    * All points defining the SVG path definition.
    */
-  get definingPoints(): FinitePoint[] {
-    return [
+  get definingPoints() {
+    let toArray = () => [
       this.startPoint,
       ...this.trailingSegments.flatMap(segment => [...segment.controlPoints, segment.endPoint]),
     ];
+
+    // control points must be anchored to their corresponding segment (not the path as a whole)
+    let anchored = () => [
+      this.startPoint.deepCopy(),
+      ...this.#completeSegments.flatMap(segment => [
+        ...segment.controlPoints.map(p => segment.closestPoint(p)),
+        segment.endPoint.deepCopy(),
+      ]),
+    ];
+
+    return {
+      toArray,
+
+      /**
+       * Note that the `anchored()` method returns new point objects,
+       * which means that editing the returned points has no effect on this `D` instance
+       * (e.g., on the output of the `toString()` method).
+       *
+       * This is in contrast with the `toArray()` method,
+       * which returns the same point objects that define this `D` instance.
+       */
+      anchored,
+    };
   }
 
   get startPoint(): FinitePoint {
@@ -100,7 +134,7 @@ export class D {
    * (e.g., the point on the curve that is being clicked on during dragging).
    */
   drag(x: number, y: number, options: { dragPoint: { x: number, y: number } }): void {
-    let definingPoints = new Points(this.definingPoints);
+    let definingPoints = new Points(this.definingPoints.toArray());
 
     // the point to drag
     let p = definingPoints.closest(options.dragPoint);
