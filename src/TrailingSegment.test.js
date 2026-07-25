@@ -4,6 +4,8 @@ import { SVGPathData } from 'svg-pathdata';
 
 import { FinitePoint } from '@rnacanvas/points.oopified';
 
+import { ControlPoint } from './ControlPoint';
+
 describe('`class TrailingSegment`', () => {
   test('`static matching()`', () => {
     var pathD = new SVGPathData('M 0 0 L 10 -30 Q 12 -18 8.4 10 C 10 20 -2 -3 50 30');
@@ -24,6 +26,8 @@ describe('`class TrailingSegment`', () => {
     expect(segment.controlPoints[0].x).toBe(12);
     expect(segment.controlPoints[0].y).toBe(-18);
 
+    expect(segment.controlPoints[0]).toBeInstanceOf(ControlPoint);
+
     expect(segment.endPoint.x).toBe(8.4);
     expect(segment.endPoint.y).toBe(10);
 
@@ -36,6 +40,9 @@ describe('`class TrailingSegment`', () => {
       expect(segment.controlPoints[i].x).toBe(x);
       expect(segment.controlPoints[i].y).toBe(y);
     });
+
+    expect(segment.controlPoints[0]).toBeInstanceOf(ControlPoint);
+    expect(segment.controlPoints[1]).toBeInstanceOf(ControlPoint);
 
     expect(segment.endPoint.x).toBe(50);
     expect(segment.endPoint.y).toBe(30);

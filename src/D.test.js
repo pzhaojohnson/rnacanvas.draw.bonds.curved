@@ -10,6 +10,8 @@ import { TrailingSegment } from './TrailingSegment';
 
 import { FinitePoint } from '@rnacanvas/points.oopified';
 
+import { ControlPoint } from './ControlPoint';
+
 import { SVGPathData } from 'svg-pathdata';
 
 describe('`class D`', () => {
@@ -18,21 +20,24 @@ describe('`class D`', () => {
     var d = D.matching('M -10 2 Q 50 100 -2.5 -8');
 
     [[-10, 2], [50, 100], [-2.5, -8]].forEach((coordinates, i) => {
-      expect(d.definingPoints.toArray()[i]).toStrictEqual(new FinitePoint(...coordinates));
+      var { x, y } = d.definingPoints.toArray()[i];
+      expect({ x, y }).toStrictEqual({ x: coordinates[0], y: coordinates[1] });
     });
 
     // multiple trailing segments of different types
     var d = D.matching('M 0 3 L 50 -100 Q 50 80 -2.9 -12 C 50 200 1 2 -12 15');
 
     [[0, 3], [50, -100], [50, 80], [-2.9, -12], [50, 200], [1, 2], [-12, 15]].forEach((coordinates, i) => {
-      expect(d.definingPoints.toArray()[i]).toStrictEqual(new FinitePoint(...coordinates));
+      var { x, y } = d.definingPoints.toArray()[i];
+      expect({ x, y }).toStrictEqual({ x: coordinates[0], y: coordinates[1] });
     });
 
     // converts relative paths to absolute paths
     var d = D.matching('M 100 10 q 50 -2 -50 25 q 80 20 1 5');
 
     [[100, 10], [150, 8], [50, 35], [130, 55], [51, 40]].forEach((coordinates, i) => {
-      expect(d.definingPoints.toArray()[i]).toStrictEqual(new FinitePoint(...coordinates));
+      var { x, y } = d.definingPoints.toArray()[i];
+      expect({ x, y }).toStrictEqual({ x: coordinates[0], y: coordinates[1] });
     });
 
     // undefined
@@ -102,14 +107,16 @@ describe('`class D`', () => {
     var d = D.matching('M -10 2 Q 50 100 -2.5 -8');
 
     [[-10, 2], [50, 100], [-2.5, -8]].forEach((coordinates, i) => {
-      expect(d.definingPoints.toArray()[i]).toStrictEqual(new FinitePoint(...coordinates));
+      var { x, y } = d.definingPoints.toArray()[i];
+      expect({ x, y }).toStrictEqual({ x: coordinates[0], y: coordinates[1] });
     });
 
     // multiple trailing segments of different types
     var d = D.matching('M 0 3 L 50 -100 Q 50 80 -2.9 -12 C 50 200 1 2 -12 15');
 
     [[0, 3], [50, -100], [50, 80], [-2.9, -12], [50, 200], [1, 2], [-12, 15]].forEach((coordinates, i) => {
-      expect(d.definingPoints.toArray()[i]).toStrictEqual(new FinitePoint(...coordinates));
+      var { x, y } = d.definingPoints.toArray()[i];
+      expect({ x, y }).toStrictEqual({ x: coordinates[0], y: coordinates[1] });
     });
 
     // multiple trailing segments
@@ -151,7 +158,8 @@ describe('`class D`', () => {
     expect(d.interveningPoints.length).toBe(5);
 
     [[50, -100], [50, 80], [-2.9, -12], [50, 200], [1, 2]].forEach((coordinates, i) => {
-      expect(d.interveningPoints[i]).toStrictEqual(new FinitePoint(...coordinates));
+      var { x, y } = d.interveningPoints[i];
+      expect({ x, y }).toStrictEqual({ x: coordinates[0], y: coordinates[1] });
     });
   });
 
@@ -167,7 +175,7 @@ describe('`class D`', () => {
     expect(d.controlPoints.length).toBe(3);
 
     [[50, 80], [50, 200], [1, 2]].forEach((coordinates, i) => {
-      expect(d.controlPoints[i]).toStrictEqual(new FinitePoint(...coordinates));
+      expect(d.controlPoints[i]).toStrictEqual(new ControlPoint(...coordinates));
     });
   });
 
@@ -230,7 +238,7 @@ describe('`class D`', () => {
     d.drag(8, 27, { dragPoint: { x: 29.5, y: 19 } });
 
     // must multiply X and Y drag components by 2 (for control points)
-    expect(d.segments[3].controlPoints[0]).toStrictEqual(new FinitePoint(46, 74));
+    expect(d.segments[3].controlPoints[0]).toStrictEqual(new ControlPoint(46, 74));
 
     // the point to be dragged
     var p = d.segments[2].endPoint;

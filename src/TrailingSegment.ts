@@ -4,6 +4,8 @@ import type { SVGCommand } from 'svg-pathdata';
 
 import { FinitePoint } from '@rnacanvas/points.oopified';
 
+import { ControlPoint } from './ControlPoint';
+
 /**
  * A segment that comes after at least one previous segment in an SVG path definition (for a curved bond).
  */
@@ -20,11 +22,11 @@ export class TrailingSegment {
     var controlPoints: FinitePoint[] = [];
 
     if (command.type === SVGPathData.QUAD_TO || command.type === SVGPathData.CURVE_TO) {
-      controlPoints.push(new FinitePoint(command.x1, command.y1));
+      controlPoints.push(new ControlPoint(command.x1, command.y1));
     }
 
     if (command.type === SVGPathData.CURVE_TO) {
-      controlPoints.push(new FinitePoint(command.x2, command.y2));
+      controlPoints.push(new ControlPoint(command.x2, command.y2));
     }
 
     var endPoint = new FinitePoint(command.x, command.y);

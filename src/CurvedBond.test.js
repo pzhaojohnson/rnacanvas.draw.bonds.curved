@@ -316,6 +316,45 @@ describe('`class CurvedBond`', () => {
 
     expect(bond.definingPoints.closest({ x: 0, y: 9 }).x).toBe(1);
     expect(bond.definingPoints.closest({ x: 0, y: 9 }).y).toBe(9);
+
+    base1.centerPoint = { x: -15, y: 48 };
+    base2.centerPoint = { x: -9, y: -225 };
+
+    bond.domNode.setAttribute('d', 'M -10 40 Q -100 0 25 -15 Q 80 -20 -10 -200');
+
+    // approximate as a vertical line for the purposes of testing
+    SVGElement.prototype.getPointAtLength = length => ({ x: -10, y: 40 - length });
+
+    SVGElement.prototype.getTotalLength = () => 40 - (-200);
+
+    // dragging the start point
+    bond.definingPoints.anchored().closest({ x: -9, y: 52 }).drag(5, -12);
+
+    expect(bond.definingPoints.toArray()[0].x).toBeCloseTo(-5);
+    expect(bond.definingPoints.toArray()[0].y).toBeCloseTo(28);
+
+    // dragging a control point
+    bond.definingPoints.anchored().closest({ x: -12, y: -19 }).drag(-2, 2.5);
+
+    // multiplies X and Y drag components by 2 (for control points)
+    expect(bond.definingPoints.toArray()[3].x).toBeCloseTo(76);
+    expect(bond.definingPoints.toArray()[3].y).toBeCloseTo(-15);
+
+    // dragging an intervening end point
+    bond.definingPoints.anchored().closest({ x: 26, y: -12 }).drag(7, 8);
+
+    expect(bond.definingPoints.toArray()[2].x).toBeCloseTo(32);
+    expect(bond.definingPoints.toArray()[2].y).toBeCloseTo(-7);
+
+    // dragging the final end point
+    bond.definingPoints.anchored().closest({ x: -12.5, y: -201 }).drag(-0.5, 100);
+
+    expect(bond.definingPoints.toArray()[4].x).toBeCloseTo(-10.5);
+    expect(bond.definingPoints.toArray()[4].y).toBeCloseTo(-100);
+
+    // caches base paddings
+    expect(JSON.parse(bond.domNode.dataset.basePadding1).magnitude).toBeCloseTo(22.360679774997898);
+    expect(JSON.parse(bond.domNode.dataset.basePadding2).magnitude).toBeCloseTo(125.00899967602332);
   });
 
   test('`drag()`', () => {

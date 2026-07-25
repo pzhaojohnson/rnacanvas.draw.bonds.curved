@@ -241,6 +241,38 @@ export class CurvedBond<B extends Nucleobase> {
        * Returns the closest defining point to a given point.
        */
       closest,
+
+      anchored: () => ({
+        closest: (p: PointLike) => {
+          let d = D.matching(this.domNode.getAttribute('d'));
+
+          let anchored = d.definingPoints.anchored();
+
+          let sorted = [...anchored].sort((p1, p2) => distance(p1, p) - distance(p2, p));
+
+          // the index of the closest defining point
+          let closestIndex = anchored.indexOf(sorted[0]);
+
+          return {
+            drag: (x: number, y: number) => {
+              // update path definition to what it is currently (at the time of dragging)
+              let d = D.matching(this.domNode.getAttribute('d'));
+
+              let closest: FinitePoint | undefined = d.definingPoints.toArray()[closestIndex];
+
+              if (!closest) {
+                throw new Error('The reference to the closest defining point was lost.');
+              }
+
+              closest.drag(x, y);
+
+              this.domNode.setAttribute('d', d.toString());
+
+              this.#cacheBasePaddings();
+            },
+          };
+        },
+      }),
     };
   }
 
