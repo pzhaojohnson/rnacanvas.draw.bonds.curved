@@ -40,12 +40,12 @@ export class CurvedBond<B extends Nucleobase> {
     domNode.id = 'id-' + uuidv4();
 
     // assign some default values
-    domNode.setAttribute('stroke', '#333');
+    domNode.setAttribute('stroke', 'red');
 
-    domNode.setAttribute('stroke-width', `${0.097 * mean([baseHeight1, baseHeight2])}`);
+    domNode.setAttribute('stroke-width', `${0.146 * mean([baseHeight1, baseHeight2])}`);
     domNode.setAttribute('stroke-opacity', '1');
 
-    domNode.setAttribute('stroke-dasharray', '2 1.5');
+    domNode.setAttribute('stroke-dasharray', '3 1.5');
     domNode.setAttribute('stroke-linecap', '');
     domNode.setAttribute('stroke-linejoin', '');
 
@@ -72,7 +72,7 @@ export class CurvedBond<B extends Nucleobase> {
 
     // make slightly curved by default
     d.trailingSegments[0].controlPoints[0] = FinitePoint.matching(mp.displaced({
-      magnitude: 0.25 * distance(d.startPoint, d.endPoint),
+      magnitude: 0.45 * distance(d.startPoint, d.endPoint),
       direction: direction(d.startPoint, d.endPoint) - (Math.PI / 2),
     }));
 

@@ -37,10 +37,10 @@ describe('`class CurvedBond`', () => {
     expect(bond.domNode.id).toMatch(uuidRegex);
 
     // assigns some default values (exact values are hard-coded to match `static between()` method)
-    expect(bond.domNode.getAttribute('stroke')).toBe('#333');
+    expect(bond.domNode.getAttribute('stroke')).toBe('red');
 
     // adjust stroke width based on mean base height
-    expect(Number.parseFloat(bond.domNode.getAttribute('stroke-width'))).toBeCloseTo(0.97);
+    expect(Number.parseFloat(bond.domNode.getAttribute('stroke-width'))).toBeCloseTo(1.46);
 
     // explicitly assigns fill of "none"
     expect(bond.domNode.getAttribute('fill')).toBe('none');
@@ -384,7 +384,7 @@ describe('`class CurvedBond`', () => {
     // repositions the curved bond
     expect(Point.matching(controlPoint).distanceTo(d.trailingSegments[0].controlPoints[0])).toBeCloseTo(2 * 5);
 
-    expect(d.toString()).toBe('M 100 -250.1 Q 613.525 -127.04999999999995 820 340');
+    expect(d.toString()).toBe('M 100 -250.1 Q 731.5450000000001 -271.05 820 340');
 
     // multiple intervening points
     bond.domNode.setAttribute('d', 'M 0 0 Q 30 50 -10 -20 C 80 200 100 101 12 3');
