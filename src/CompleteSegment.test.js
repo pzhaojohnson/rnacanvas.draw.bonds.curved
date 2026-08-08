@@ -74,17 +74,9 @@ describe('`class CompleteSegment`', () => {
 
     SVGElement.prototype.getTotalLength = () => 125;
 
-    // without specifying precision
     var p = completeSegment.closestPoint({ x: 131, y: 10 });
 
-    // assuming a default precision of 5
-    expect(p.x).toBeCloseTo(130);
-    expect(p.y).toBeCloseTo(-20);
-
-    // specifying precision
-    var p = completeSegment.closestPoint({ x: 131, y: 10 }, { precision: 20 });
-
-    expect(p.x).toBeCloseTo(125);
+    expect(p.x).toBeCloseTo(131);
     expect(p.y).toBeCloseTo(-20);
   });
 });

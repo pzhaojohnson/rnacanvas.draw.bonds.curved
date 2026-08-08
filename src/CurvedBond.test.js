@@ -280,21 +280,9 @@ describe('`class CurvedBond`', () => {
 
     bond.domNode.getPointAtLength = length => ({ x: 10 + length, y: 20 });
 
-    // without specifying precision
-    expect(Math.abs(bond.closestPoint({ x: 57, y: 18 }).x - 57)).toBeLessThanOrEqual(5);
-    expect(Math.abs(bond.closestPoint({ x: 57, y: 18 }).y - 20)).toBeLessThanOrEqual(5);
-    expect(Math.abs(bond.closestPoint({ x: 57, y: 18 }).length - 47)).toBeLessThanOrEqual(5);
-
-    // specifying precision
-    expect(Math.abs(bond.closestPoint({ x: 57, y: 18 }, { precision: 0.5 }).x - 57)).toBeLessThanOrEqual(0.5);
-    expect(Math.abs(bond.closestPoint({ x: 57, y: 18 }, { precision: 0.5 }).y - 20)).toBeLessThanOrEqual(0.5);
-    expect(Math.abs(bond.closestPoint({ x: 57, y: 18 }, { precision: 0.5 }).length - 47)).toBeLessThanOrEqual(0.5);
-
-    // specifying a precision of zero
-    expect(() => bond.closestPoint({ x: 57, y: 18 }, { precision: 0 })).toThrow();
-
-    // specifying negative precision
-    expect(() => bond.closestPoint({ x: 57, y: 18 }, { precision: -1 })).toThrow();
+    expect(bond.closestPoint({ x: 57, y: 18 }).x).toBeCloseTo(57);
+    expect(bond.closestPoint({ x: 57, y: 18 }).y).toBeCloseTo(20);
+    expect(bond.closestPoint({ x: 57, y: 18 }).length).toBeCloseTo(47);
   });
 
   test('`get definingPoints()`', () => {

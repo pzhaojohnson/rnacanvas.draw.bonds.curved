@@ -19,19 +19,13 @@ export class CompleteSegment {
 
   /**
    * Returns the closest point within the segment to the specified point.
-   *
-   * The `precision` option roughly corresponds to the margin for error in the closest point calculation.
-   *
-   * Higher margin for error speeds up calculation.
    */
-  closestPoint(p: Point, options?: { precision?: number }) {
-    let precision = options?.precision ?? 5;
-
+  closestPoint(p: Point) {
     let path = new AbstractPath(
       `M ${this.startPoint.x} ${this.startPoint.y} ${this.#trailingSegment.toString()}`
     );
 
-    return path.closestPoint(p, { precision });
+    return path.closestPoint(p);
   }
 }
 

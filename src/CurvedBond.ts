@@ -211,17 +211,13 @@ export class CurvedBond<B extends Nucleobase> {
   /**
    * Returns the closest point along the curved bond to a specified point.
    *
-   * The `precision` option corresponds to the margin for error in the closest point calculation.
-   *
-   * (Higher margin for error speeds up calculation.)
-   *
    * The length along the curved bond that the closest point is at is also returned within the returned closest point object
    * (as the `length` property).
    *
-   * This method will throw if a precision of zero or a negative precision are specified.
+   * This method is not guaranteed to always return the true closest point (e.g., for particularly convoluted curved bonds).
    */
-  closestPoint(p: PointLike, options?: { precision?: number }) {
-    return (new Path(this.domNode)).closestPoint(p, options);
+  closestPoint(p: PointLike) {
+    return (new Path(this.domNode)).closestPoint(p);
   }
 
   /**
