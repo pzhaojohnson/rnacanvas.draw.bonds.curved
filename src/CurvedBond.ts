@@ -72,7 +72,7 @@ export class CurvedBond<B extends Nucleobase> {
 
     // make slightly curved by default
     d.trailingSegments[0].controlPoints[0] = FinitePoint.matching(mp.displaced({
-      magnitude: 0.45 * distance(d.startPoint, d.endPoint),
+      magnitude: 0.2 * distance(d.startPoint, d.endPoint),
       direction: direction(d.startPoint, d.endPoint) - (Math.PI / 2),
     }));
 

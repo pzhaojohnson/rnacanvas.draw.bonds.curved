@@ -372,7 +372,7 @@ describe('`class CurvedBond`', () => {
     // repositions the curved bond
     expect(Point.matching(controlPoint).distanceTo(d.trailingSegments[0].controlPoints[0])).toBeCloseTo(2 * 5);
 
-    expect(d.toString()).toBe('M 100 -250.1 Q 731.5450000000001 -271.05 820 340');
+    expect(d.toString()).toBe('M 100 -250.1 Q 584.02 -91.05 820 340');
 
     // multiple intervening points
     bond.domNode.setAttribute('d', 'M 0 0 Q 30 50 -10 -20 C 80 200 100 101 12 3');
