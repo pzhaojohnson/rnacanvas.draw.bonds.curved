@@ -63,8 +63,8 @@ export class CurvedBond<B extends Nucleobase> {
     bond.basePadding1.magnitude = 0.591 * baseHeight1;
     bond.basePadding2.magnitude = 0.591 * baseHeight2;
 
-    bond.basePadding1.direction = -Math.PI / 4;
-    bond.basePadding2.direction = Math.PI / 4;
+    bond.basePadding1.direction = -Math.PI / 8;
+    bond.basePadding2.direction = Math.PI / 8;
 
     let d = D.matching(bond.domNode.getAttribute('d'));
 
