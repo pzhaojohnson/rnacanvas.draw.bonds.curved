@@ -81,6 +81,14 @@ export class CurvedBond<B extends Nucleobase> {
     return bond;
   }
 
+  readonly #changeObserver;
+
+  readonly #eventListeners: {
+    'change': (() => void)[],
+  } = {
+    'change': [],
+  };
+
   constructor(readonly domNode: SVGPathElement, readonly base1: B, readonly base2: B) {
     // don't overwrite previously cached base paddings
     if (!domNode.dataset.basePadding1 && !domNode.dataset.basePadding2) {
@@ -90,6 +98,10 @@ export class CurvedBond<B extends Nucleobase> {
     // reposition curved bonds when either base moves
     base1.addEventListener('change', () => this.#reposition());
     base2.addEventListener('change', () => this.#reposition());
+
+    this.#changeObserver = new MutationObserver(() => this.#callEventListeners('change'));
+
+    this.#changeObserver.observe(domNode, { attributes: true, subtree: true });
   }
 
   get id(): string {
@@ -290,6 +302,20 @@ export class CurvedBond<B extends Nucleobase> {
     this.domNode.setAttribute('d', d.toString());
 
     this.#cacheBasePaddings();
+  }
+
+  addEventListener(name: 'change', listener: () => void): void {
+    this.#eventListeners[name].push(listener);
+  }
+
+  #callEventListeners(name: 'change'): void {
+    for (let listener of this.#eventListeners[name]) {
+      listener();
+    }
+  }
+
+  removeEventListener(name: 'change', listener: () => void): void {
+    this.#eventListeners[name] = this.#eventListeners[name].filter(li => li !== listener);
   }
 
   remove(): void {

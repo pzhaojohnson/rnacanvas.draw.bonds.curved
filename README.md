@@ -283,6 +283,41 @@ interface Collection {
 }
 ```
 
+### `addEventListener()`
+
+Listen for any change on a curved bond.
+
+```javascript
+curvedBond.addEventListener('change', () => {});
+```
+
+### `removeEventListener()`
+
+Remove a previously added listener.
+
+```javascript
+var listener = () => {};
+
+// add the listener
+curvedBond.addEventListener('change', listener);
+
+// remove the listener
+curvedBond.removeEventListener('change', listener);
+```
+
+Removing a listener that hasn't been added (or has already been removed) has no effect.
+
+```javascript
+var listener = () => {};
+
+curvedBond.addEventListener('change', listener);
+
+curvedBond.removeEventListener('change', listener);
+
+// no-op (already removed)
+curvedBond.removeEventListener('change', listener);
+```
+
 ### `remove()`
 
 Removes the DOM node of a curved bond from whatever container node that it's in (e.g., a drawing).

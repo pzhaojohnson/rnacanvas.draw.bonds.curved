@@ -413,6 +413,53 @@ describe('`class CurvedBond`', () => {
     expect(bond.domNode.getAttribute('d')).not.toEqual(d.toString());
   });
 
+  test('`addEventListener()`', async () => {
+    var domNode = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    var bond = new CurvedBond(domNode, base1, base2);
+
+    var onChange = jest.fn();
+
+    bond.addEventListener('change', onChange);
+
+    domNode.setAttribute('d', 'M 0 0 Q 10 20 20 0');
+
+    await Promise.resolve();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+  });
+
+  test('`removeEventListener()`', async () => {
+    var domNode = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+    var base1 = new NucleobaseMock();
+    var base2 = new NucleobaseMock();
+
+    var bond = new CurvedBond(domNode, base1, base2);
+
+    var onChange = jest.fn();
+
+    bond.addEventListener('change', onChange);
+
+    domNode.setAttribute('d', 'M 0 0 Q 10 20 20 0');
+
+    await Promise.resolve();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+
+    bond.removeEventListener('change', onChange);
+
+    domNode.setAttribute('d', 'M 0 0 Q 100 200 200 0');
+
+    await Promise.resolve();
+
+    // not called again
+    expect(onChange).toHaveBeenCalledTimes(1);
+  });
+
   test('`remove()`', () => {
     var base1 = new NucleobaseMock();
     var base2 = new NucleobaseMock();
