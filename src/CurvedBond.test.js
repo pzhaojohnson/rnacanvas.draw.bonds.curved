@@ -40,7 +40,7 @@ describe('`class CurvedBond`', () => {
     expect(bond.domNode.getAttribute('stroke')).toBe('red');
 
     // adjust stroke width based on mean base height
-    expect(Number.parseFloat(bond.domNode.getAttribute('stroke-width'))).toBeCloseTo(1.46);
+    expect(Number.parseFloat(bond.domNode.getAttribute('stroke-width'))).toBeCloseTo(1.22);
 
     // explicitly assigns fill of "none"
     expect(bond.domNode.getAttribute('fill')).toBe('none');

@@ -42,7 +42,7 @@ export class CurvedBond<B extends Nucleobase> {
     // assign some default values
     domNode.setAttribute('stroke', 'red');
 
-    domNode.setAttribute('stroke-width', `${0.146 * mean([baseHeight1, baseHeight2])}`);
+    domNode.setAttribute('stroke-width', `${0.122 * mean([baseHeight1, baseHeight2])}`);
     domNode.setAttribute('stroke-opacity', '1');
 
     domNode.setAttribute('stroke-dasharray', '3 1.5');
